@@ -2,7 +2,7 @@
 -- Metadatabase for PRIZM
 -------------------------
 
--- ------------------
+-- -------------------
 -- PRIZM Metadatabase
 -- ------------------
 .open prizm_metadatabase.db
