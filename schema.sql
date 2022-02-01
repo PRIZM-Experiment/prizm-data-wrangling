@@ -230,6 +230,7 @@ CREATE TABLE ComponentGroups
 CREATE TABLE ComponentGroupingIndex
 (
   component_grouping INTEGER NOT NULL,
+  grouping_name      TEXT    NOT NULL,
 
   PRIMARY KEY (component_grouping)
 );
