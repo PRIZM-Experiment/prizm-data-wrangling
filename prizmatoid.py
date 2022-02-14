@@ -28,7 +28,7 @@ import suntime
 import ephem
 from datetime import datetime, timezone, timedelta
 
-from . import metadatabase as mdb
+import metadatabase as mdb
 
 class SpectralData:
     """
