@@ -16,7 +16,11 @@ from pygsm import GSMObserver
 from pygsm import GlobalSkyModel
 
 # Scio (https://github.com/sievers/scio)
-import scio
+# Handle the difference between the scio version on Github and pip
+try:
+    import scio.scio as scio
+except:
+    import scio
 
 # OS Control and Directory Manipulation
 import os
