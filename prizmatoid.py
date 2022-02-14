@@ -176,7 +176,7 @@ class SpectralData:
             add_quality_flags(self.data_dictionary, [self.antenna])
 
         #TODO we may not want to return the actual dictionary anymore
-        return self.data_dictionary
+        return
 
 
     def trim_flags(self, trim = (1,1)):
