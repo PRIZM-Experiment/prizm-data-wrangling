@@ -16,8 +16,8 @@ from pygsm import GSMObserver
 from pygsm import GlobalSkyModel
 
 # Scio (https://github.com/sievers/scio)
+import scio
 
-import scio.scio as scio
 # OS Control and Directory Manipulation
 import os
 import glob
@@ -50,7 +50,7 @@ class SpectralData:
     def __init__(self):
         self.antenna = None
         self.ctime_intervals = None
-        self.data_dictionary
+        self.data_dictionary = None
         self.data_directory = None
         self.patches_directory = None
         self.polarizations = None
@@ -99,7 +99,6 @@ class SpectralData:
         -------
 
         """
-
         if data_directory is None:
             raise Exception("Please define the top-level path that contains data as specified by your metadatabase")
         if patches_directory is None:
@@ -131,7 +130,7 @@ class SpectralData:
             self.polarizations = filters
 
         #TODO Functionality: we may not want to return the actual dictionary anymore
-        return self.data_dictionary
+        return
 
 
     def generate_flags(self, switch_flags=True, temp_flags=False, night_time_flags=False, moon_flags=False,
