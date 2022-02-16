@@ -17,8 +17,8 @@ CREATE TABLE DataDirectories
   directory_address      TEXT    NOT NULL,
   data_category          INTEGER NOT NULL,
   hardware_configuration INTEGER NOT NULL,
-  time_start             INTEGER NOT NULL,
-  time_stop              INTEGER NOT NULL,
+  time_start             REAL    NOT NULL,
+  time_stop              REAL    NOT NULL,
   directory_completeness BOOLEAN NOT NULL,
 
   FOREIGN KEY (data_category) REFERENCES DataCategories (data_category),
@@ -35,26 +35,27 @@ CREATE TABLE DataCategories
   PRIMARY KEY (data_category)
 );
 
-CREATE TABLE DataFiles
+CREATE TABLE DataTypes
 (
-  data_file  INTEGER NOT NULL,
-  file_name  TEXT    NOT NULL,
-  file_alias TEXT    NOT NULL,
-  data_type  TEXT    NOT NULL,
+  data_file        INTEGER NOT NULL,
+  file_name        TEXT    NOT NULL,
+  file_alias       TEXT    NOT NULL,
+  data_type        TEXT    NOT NULL,
+  data_description TEXT    NOT NULL, 
 
   PRIMARY KEY (data_file)
 );
 
-CREATE TABLE DataChannels
+CREATE TABLE DataFiles
 (
   data_directory INTEGER NOT NULL,
   data_file      INTEGER NOT NULL,
   channel_group  INTEGER NOT NULL,
-  data_quality   BOOLEAN NOT NULL,
-  file_integrity BOOLEAN NOT NULL,
+  data_integrity BOOLEAN NOT NULL,
+  data_quality   BOOLEAN     NULL,
 
   FOREIGN KEY (data_directory) REFERENCES DataDirectories (data_directory),
-  FOREIGN KEY (data_file) REFERENCES DataFiles (data_file)
+  FOREIGN KEY (data_file) REFERENCES DataTypes (data_file)
   FOREIGN KEY (channel_group) REFERENCES ChannelGroupIndex (channel_group)
 );
 
@@ -62,7 +63,6 @@ CREATE TABLE DataNotes
 (
   hardware_configuration INTEGER NOT NULL,
   data_directory         INTEGER NOT NULL,
-  data_group             INTEGER NOT NULL,
   data_file              INTEGER     NULL,
   note_author            TEXT    NOT NULL,
   note_date              TEXT    NOT NULL,
@@ -70,8 +70,7 @@ CREATE TABLE DataNotes
 
   FOREIGN KEY (hardware_configuration) REFERENCES HardwareConfigurations (hardware_configuration),
   FOREIGN KEY (data_directory) REFERENCES DataDirectories (data_directory),
-  FOREIGN KEY (data_group) REFERENCES DataGroupIndex (data_group),
-  FOREIGN KEY (data_file) REFERENCES DataFiles (data_file)
+  FOREIGN KEY (data_file) REFERENCES DataTypes (data_file)
 );
 
 
