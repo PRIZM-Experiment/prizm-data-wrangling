@@ -38,7 +38,7 @@ query = ("SELECT DataDirectories.data_category, DataDirectories.directory_addres
          "ON DataFiles.channel_group = ChannelGroups.channel_group "
          "AND ChannelGroups.channel_orientation = 'EW' "
          "AND ChannelGroups.array_element = '100' "
-         "ORDER BY DataDirectories.data_category, DataDirectories.time_start, DataTypes.file_alias ")
+         "ORDER BY DataDirectories.data_category, DataTypes.file_alias, DataDirectories.time_start ")
 
 # Terminates the connection to the MDB.
 connection.commit()
