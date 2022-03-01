@@ -5,7 +5,7 @@ import numpy as np
 from scio import scio
 
 # TODO: Change the output aliases for the 'pol0.scio' and 'pol1.scio' files to 'polEW' and 'polNS', according to their associated channel orientations. This will require adapting several other functions as well.
-def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100', '70'], channels=['EW', 'NS'], intervals=[(0.0,0.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
+def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(0.0,0.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
     """ Counts how many files of each type match the input arguments. """
 
     # Connects to the MDB and initializes a cursor.
@@ -65,7 +65,7 @@ def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100', '
     return result
 
 # TODO: Change the output aliases for the 'pol0.scio' and 'pol1.scio' files to 'polEW' and 'polNS', according to their associated channel orientations. This will require adapting several other functions as well.
-def path(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100', '70'], channels=['EW', 'NS'], intervals=[(0.0,0.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
+def path(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(0.0,0.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
     """ Retrieves the paths to each file matching the input arguments. """
 
     # Connects to the MDB and initializes a cursor.
