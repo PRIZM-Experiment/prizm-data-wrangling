@@ -55,7 +55,7 @@ CREATE TABLE DataFiles
   data_quality   BOOLEAN     NULL,
 
   FOREIGN KEY (data_directory) REFERENCES DataDirectories (data_directory),
-  FOREIGN KEY (data_file) REFERENCES DataTypes (data_file)
+  FOREIGN KEY (data_file) REFERENCES DataTypes (data_file),
   FOREIGN KEY (channel_group) REFERENCES ChannelGroupIndex (channel_group)
 );
 
@@ -193,7 +193,7 @@ CREATE TABLE HardwareChannels
 
   FOREIGN KEY (hardware_configuration) REFERENCES HardwareConfigurations (hardware_configuration),
   FOREIGN KEY (second_stage) REFERENCES SecondStages (second_stage),
-  FOREIGN KEY (component_group) REFERENCES ComponentGroupIndex (component_group)
+  FOREIGN KEY (component_group) REFERENCES ComponentGroupIndex (component_group),
   FOREIGN KEY (channel_orientation) REFERENCES ChannelOrientations (channel_orientation),
   FOREIGN KEY (array_element) REFERENCES ArrayElements (array_element)
 );

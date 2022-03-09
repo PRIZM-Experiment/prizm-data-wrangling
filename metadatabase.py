@@ -5,7 +5,7 @@ import numpy as np
 from scio import scio
 
 # TODO: Change the output aliases for the 'pol0.scio' and 'pol1.scio' files to 'polEW' and 'polNS', according to their associated channel orientations. This will require adapting several other functions as well.
-def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(0.0,0.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
+def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
     """ Counts how many files of each type match the input arguments. """
 
     # Connects to the MDB and initializes a cursor.
@@ -65,7 +65,7 @@ def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz'
     return result
 
 # TODO: Change the output aliases for the 'pol0.scio' and 'pol1.scio' files to 'polEW' and 'polNS', according to their associated channel orientations. This will require adapting several other functions as well.
-def path(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(0.0,0.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
+def path(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
     """ Retrieves the paths to each file matching the input arguments. """
 
     # Connects to the MDB and initializes a cursor.
@@ -125,7 +125,7 @@ def path(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz',
 
     return result
 
-def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100', '70'], channels=['EW', 'NS'], intervals=[(0.0,0.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL'], parent_directory=''):
+def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100', '70'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL'], parent_directory=''):
     """ Loads all files matching the input arguments. """
 
     # Initializes auxiliary data-loading dictionaries.
@@ -137,7 +137,7 @@ def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100', '7
     count_query = count(categories, instruments, channels, intervals, quality, integrity, completeness)
 
     # Allocates the auxiliary data-loading dictionaries.
-    for (classification_name, _, file_alias, __, file_count) in count_query: 
+    for (classification_name, _, file_alias, _, file_count) in count_query: 
         data[classification_name][file_alias] = [None]*file_count
         rows[classification_name][file_alias] = [0] + [None]*file_count
         counter[classification_name][file_alias] = 0
@@ -174,7 +174,7 @@ def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100', '7
 
     return output
 
-def load_custom(count_query, path_query):
+def load_custom(count_query, path_query, parent_directory=''):
     """ Loads all files matching the input queries. """
 
     # Initializes auxiliary data-loading dictionaries.
@@ -183,7 +183,7 @@ def load_custom(count_query, path_query):
     counter = collections.defaultdict(dict)
 
     # Allocates the auxiliary data-loading dictionaries.
-    for (classification_name, _, file_alias, __, file_count) in count_query: 
+    for (classification_name, _, file_alias, _, file_count) in count_query: 
         data[classification_name][file_alias] = [None]*file_count
         rows[classification_name][file_alias] = [0] + [None]*file_count
         counter[classification_name][file_alias] = 0
