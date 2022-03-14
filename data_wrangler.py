@@ -9,6 +9,7 @@ def rectify(pairs):
 
     # Removes all unpaired switch states.
     pairs = np.array([list(group)[-1] if state == 1 else list(group)[0] for state, group in itertools.groupby(pairs, lambda pair : pair[0])])
+    if pairs[-1,0] == 1: pairs = pairs[:-1,:]
 
     return pairs
 
