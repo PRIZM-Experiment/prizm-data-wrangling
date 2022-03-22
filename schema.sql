@@ -1,11 +1,6 @@
-/*
-sqlite> .read schema.sql
-*/
-
 --------------------------------
 -- Metadatabase Schema for PRIZM
 --------------------------------
-.open metadatabase.db
 
 
 -- -----------
