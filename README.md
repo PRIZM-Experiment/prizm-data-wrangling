@@ -1,6 +1,6 @@
 # PRIZM Metadatabase
 
-The PRIZM metadatabase leverages `SQLite` and Python's `sqlite3` module to keep track of the experiment's data and deployment configurations. It provides scalability, ensures data consistency, and facilidates calibration and analysis by allowing complex data intersections to be retrieved in a straightfoward fashion.
+The PRIZM metadatabase leverages `SQLite` and Python's `sqlite3` module to keep track of the experiment's data and deployment configurations. It provides scalability, ensures data consistency, and facilitates calibration and analysis by allowing complex data intersections to be retrieved in a straightfoward fashion.
 
 ## Dependencies
 
@@ -10,14 +10,14 @@ The PRIZM metadatabase leverages `SQLite` and Python's `sqlite3` module to keep 
 
 ## Installation
 
-Build the binary metadatabase file by running the following commmand.
+Run the following commmand within the repository's directory.
 
 ```bash
 sqlite3 < build.sql
 ```
 
-If successful, this will have produced a file named `metadatabase.db` within the repository's directory.
+If successful, this will have produced a binary file named `metadatabase.db` which encapsulates all of PRIZM's metadata.
 
 ## Documentation
 
-(Under Construction)
+This section is under construction. An interactive diagram of the metadatabase tables and their relationships can be found [here](https://dbdiagram.io/d/6221828954f9ad109a58a8b9).
