@@ -1,6 +1,7 @@
 import sqlite3
 import itertools
 import collections
+import pickle as p
 import numpy as np
 from scio import scio
 
@@ -216,3 +217,12 @@ def load_custom(count_query, path_query, parent_directory=''):
             output[classification_name][file_alias][file_rows:file_rows+len(file_data)] = file_data
 
     return output
+
+def load_curated(pickled_query, parent_directory=''):
+    """ Loads all files matching the queries encapsulated in the input pickle file. """
+
+    # Reads and unpacks the input pickle file.
+    count_query, path_query = p.load(open(pickled_query, 'rb'))
+
+    # Loads all files matching the extracted queries.
+    return load_custom(count_query, path_query, parent_directory)
