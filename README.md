@@ -16,7 +16,7 @@ Run the following commmand within the repository's directory.
 sqlite3 < build.sql
 ```
 
-If successful, after a few minutes this a binary file named `metadatabase.db` will have been generated which encapsulates all of PRIZM's metadata.
+If successful, after a few minutes a binary file named `metadatabase.db` encapsulating all of PRIZM's metadata will have been generated.
 
 ## Documentation
 
