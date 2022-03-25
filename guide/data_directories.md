@@ -1,4 +1,4 @@
-<sup>**[List of Tables](tables.md)**</sup>
+<sup>**← [List of Tables](tables.md)**</sup>
 
 # Data Directories
 
