@@ -20,7 +20,7 @@ Run the following commmand within the repository's directory.
 sqlite3 < build.sql
 ```
 
-If successful, after a few minutes a binary file named `metadatabase.db` encapsulating all of PRIZM's metadata will have been generated. This file can be placed in whichever directory is most convenient for the user.
+If successful, after a few minutes a binary file named `metadatabase.db` will have been generated. This file encapsulates all of PRIZM's metadata, and can be placed in whichever directory is most convenient for the user.
 
 Next, edit the directory addresses in `settings.json` to reflect the chosen locations for the `metadatabase.db` file and the PRIZM data itself. As an example, for a user accessing PRIZM data through Niagara and keeping their `metadatabase.db` within a `prizm-data-wrangling` repository cloned to their root directory, the settings should be as follows.
 ```json
