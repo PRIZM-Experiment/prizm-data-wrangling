@@ -1,17 +1,33 @@
 import sqlite3
 import itertools
 import collections
-import pickle as p
+import json
+import pickle
 import numpy as np
 from scio import scio
+
+# Loads the data and metadata directories as set by the user.
+_directories = json.load(open('settings.json', 'r'))
+
+def retrieve(query):
+    """ Retrieves information from the metadatabase according to the input query. """
+
+    # Connects to the MDB and initializes a cursor.
+    connection = sqlite3.connect(_directories['metadata'] + '/metadatabase.db')
+    cursor = connection.cursor()
+
+    # Queries the MDB.
+    result = cursor.execute(query).fetchall()
+
+    # Terminates the connection to the MDB.
+    connection.commit()
+    connection.close()
+
+    return result
 
 # TODO: Change the output aliases for the 'pol0.scio' and 'pol1.scio' files to 'polEW' and 'polNS', according to their associated channel orientations. This will require adapting several other functions as well.
 def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
     """ Counts how many files of each type match the input arguments. """
-
-    # Connects to the MDB and initializes a cursor.
-    connection = sqlite3.connect('metadatabase.db')
-    cursor = connection.cursor()
 
     # Initializes the SQLite query.
     query = ""
@@ -57,21 +73,13 @@ def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz'
     query = "SELECT classification_name, file_name, file_alias, data_type, COUNT(file_alias) FROM (" + query + ") GROUP BY classification_name, file_alias"
 
     # Queries the MDB.
-    result = cursor.execute(query).fetchall()
-
-    # Terminates the connection to the MDB.
-    connection.commit()
-    connection.close()
+    result = retrieve(query)
 
     return result
 
 # TODO: Change the output aliases for the 'pol0.scio' and 'pol1.scio' files to 'polEW' and 'polNS', according to their associated channel orientations. This will require adapting several other functions as well.
 def path(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
     """ Retrieves the paths to each file matching the input arguments. """
-
-    # Connects to the MDB and initializes a cursor.
-    connection = sqlite3.connect('metadatabase.db')
-    cursor = connection.cursor()
 
     # Initializes the SQLite query.
     query = ""
@@ -118,15 +126,11 @@ def path(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz',
     query = "SELECT classification_name, file_path, file_name, file_alias, data_type FROM (" + query + ") ORDER BY classification_name, time_start"
 
     # Queries the MDB.
-    result = cursor.execute(query).fetchall()
-
-    # Terminates the connection to the MDB.
-    connection.commit()
-    connection.close()
+    result = retrieve(query)
 
     return result
 
-def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100', '70'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL'], parent_directory=''):
+def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100', '70'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
     """ Loads all files matching the input arguments. """
 
     # Initializes auxiliary data-loading dictionaries.
@@ -151,10 +155,10 @@ def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100', '7
         index = counter[classification_name][file_alias]
 
         if '.scio' in file_name:
-            data[classification_name][file_alias][index] = scio.read(parent_directory + file_path) 
+            data[classification_name][file_alias][index] = scio.read(_directories['data'] + file_path) 
 
         elif '.raw' in file_name:
-            data[classification_name][file_alias][index] = np.fromfile(parent_directory + file_path, data_type)
+            data[classification_name][file_alias][index] = np.fromfile(_directories['data'] + file_path, data_type)
 
         rows[classification_name][file_alias][index+1] = rows[classification_name][file_alias][index] + len(data[classification_name][file_alias][index])
         counter[classification_name][file_alias] += 1
@@ -175,7 +179,7 @@ def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100', '7
 
     return output
 
-def load_custom(count_query, path_query, parent_directory=''):
+def load_custom(count_query, path_query):
     """ Loads all files matching the input queries. """
 
     # Initializes auxiliary data-loading dictionaries.
@@ -194,10 +198,10 @@ def load_custom(count_query, path_query, parent_directory=''):
         index = counter[classification_name][file_alias]
 
         if '.scio' in file_name:
-            data[classification_name][file_alias][index] = scio.read(parent_directory + file_path) 
+            data[classification_name][file_alias][index] = scio.read(_directories['data'] + file_path) 
 
         elif '.raw' in file_name:
-            data[classification_name][file_alias][index] = np.fromfile(parent_directory + file_path, data_type)
+            data[classification_name][file_alias][index] = np.fromfile(_directories['data'] + file_path, data_type)
 
         rows[classification_name][file_alias][index+1] = rows[classification_name][file_alias][index] + len(data[classification_name][file_alias][index])
         counter[classification_name][file_alias] += 1
@@ -218,11 +222,11 @@ def load_custom(count_query, path_query, parent_directory=''):
 
     return output
 
-def load_curated(pickled_query, parent_directory=''):
+def load_curated(pickled_query):
     """ Loads all files matching the queries encapsulated in the input pickle file. """
 
     # Reads and unpacks the input pickle file.
-    count_query, path_query = p.load(open(pickled_query, 'rb'))
+    count_query, path_query = pickle.load(open(pickled_query, 'rb'))
 
     # Loads all files matching the extracted queries.
-    return load_custom(count_query, path_query, parent_directory)
+    return load_custom(count_query, path_query)
