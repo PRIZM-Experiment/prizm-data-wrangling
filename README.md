@@ -34,47 +34,45 @@ Finally, to conclude the installation, ensure your `PYTHONPATH` environment vari
 
 ## Documentation
 
-## Schema
+### Schema
 
-Below all tables in the metadatabase schema at listed under the data, hardware, and index categories. Click any table to access more details about its contents and relationships to other tables in the schema. For an interactive diagram of the metadatabase schema, click [here](https://dbdiagram.io/d/6221828954f9ad109a58a8b9).
+Below the Data, Hardware, and Index tables which make up the metadatabase schema are listed. Click any table to access more details about its contents and relationships to other tables in the schema. For an interactive diagram of the metadatabase schema, click [here](https://dbdiagram.io/d/6221828954f9ad109a58a8b9).
 
-- **Data Tables**
-    - **[Data Diretories](guide/data_directories.md)**
-    - **[Data Categories](guide/data_categories.md)**
-    - **[Data Types](guide/data_types.md)**
-    - **[Data Files](guide/data_files.md)**
-    - **[Data Notes](guide/data_notes.md)**
+- **Data**
+    - [Data Diretories](guide/data_directories.md)
+    - [Data Categories](guide/data_categories.md)
+    - [Data Types](guide/data_types.md)
+    - [Data Files](guide/data_files.md)
+    - [Data Notes](guide/data_notes.md)
+- **Hardware**
+    - [Hardware Configurations](guide/hardware_configurations.md)
+    - [Array Elements](guide/array_elements.md)
+    - [Hardware Components](guide/hardware_components.md)
+    - [Component Groups](guide/component_groups.md)
+    - [Component Groupings](guide/component_groupings.md)
+    - [First Stages](guide/first_stages.md)
+    - [Second Stages](guide/second_stages.md)
+    - [First Stage Groups](guide/first_stage_groups.md)
+    - [Second Stage Groups](guide/second_stage_groups.md)
+    - [Channel Orientations](guide/channel_orientations.md)
+    - [Hardware Channels](guide/hardware_channels.md)
+    - [Channel Groups](guide/channel_groups.md)
+    - [Hardware Notes](guide/hardware_notes.md)
+- **Index**
+    - [Component Group Index](guide/component_group_index.md)
+    - [Component Grouping Index](guide/component_grouping_index.md)
+    - [First Stage Group Index](guide/first_stage_group_index.md)
+    - [Second Stage Group Index](guide/second_stage_group_index.md)
+    - [Channel Group Index](guide/channel_group_index.md)
 
-- **Hardware Tables**
-    - **[Hardware Configurations](guide/hardware_configurations.md)**
-    - **[Array Elements](guide/array_elements.md)**
-    - **[Hardware Components](guide/hardware_components.md)**
-    - **[Component Groups](guide/component_groups.md)**
-    - **[Component Groupings](guide/component_groupings.md)**
-    - **[First Stages](guide/first_stages.md)**
-    - **[Second Stages](guide/second_stages.md)**
-    - **[First Stage Groups](guide/first_stage_groups.md)**
-    - **[Second Stage Groups](guide/second_stage_groups.md)**
-    - **[Channel Orientations](guide/channel_orientations.md)**
-    - **[Hardware Channels](guide/hardware_channels.md)**
-    - **[Channel Groups](guide/channel_groups.md)**
-    - **[Hardware Notes](guide/hardware_notes.md)**
-
-- **Index Tables**
-    - **[Component Group Index](guide/component_group_index.md)**
-    - **[Component Grouping Index](guide/component_grouping_index.md)**
-    - **[First Stage Group Index](guide/first_stage_group_index.md)**
-    - **[Second Stage Group Index](guide/second_stage_group_index.md)**
-    - **[Channel Group Index](guide/channel_group_index.md)**
-
-## Usage
+### Usage
 
 The usage examples covered below assume that the metadatabase Python module has been imported as follows.
 ```python
 import metadatabase as mdb
 ```
 
-### Querying the Metadatabase
+#### Querying Metadata
 
 ```python
 mdb.retrieve("SELECT * FROM HardwareComponents")
@@ -88,5 +86,5 @@ mdb.retrieve("SELECT * FROM HardwareComponents")
  ...
  (10, 'HIbiscus', 'RhoTech and Pinion & Adams', 'HIbiscus Four-Square Antenna.')]
 ```
-### Loading Data
+#### Loading Data
 (Under Construction)
