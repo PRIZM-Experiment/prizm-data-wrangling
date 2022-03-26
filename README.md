@@ -1,6 +1,6 @@
 # PRIZM Metadatabase
 
-The PRIZM metadatabase leverages `SQLite` and Python's `sqlite3` module to keep track of the experiment's data and deployment configurations. It provides scalability, ensures data consistency, and facilitates calibration and analysis by allowing complex data intersections to be retrieved in a straightforward fashion.
+The PRIZM metadatabase leverages SQLite and Python's `sqlite3` module to keep track of the experiment's data and deployment configurations. It provides scalability, ensures data consistency, and facilitates calibration and analysis by allowing complex data intersections to be retrieved in a straightforward fashion.
 
 ## Dependencies
 
@@ -51,7 +51,7 @@ import metadatabase as mdb
 
 #### Retrieving Metadata
 
-`SQLite` queries can be executed using the `retrieve` function. For instance, the following construction can be used to retrieve the model number and description of every hardware component listed in the PRIZM metadatabase.
+SQLite queries can be executed using the `retrieve` function. For instance, the following construction can be used to retrieve the model number and description of every hardware component listed in the PRIZM metadatabase.
 ```python
 mdb.retrieve("SELECT component_model, component_description FROM HardwareComponents")
 ```

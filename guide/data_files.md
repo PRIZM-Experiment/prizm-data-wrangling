@@ -12,4 +12,4 @@ Table name: `DataFiles`.
 | `data_integrity`                            | Boolean   | False    | Specifies whether the file is corrupted.                          |
 | `data_quality`                              | Boolean   | True     | Specifies whether the data stored by the file is of good quality. |
 
-<sup>**Legend**: [`●`](data_directories.md) Primary Key, [`○`](data_directories.md) Foreign Key.</sup>
+<sup>**Legend**: [`●`](data_files.md) Primary Key, [`○`](data_files.md) Foreign Key.</sup>

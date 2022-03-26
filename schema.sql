@@ -57,7 +57,7 @@ CREATE TABLE DataFiles
 CREATE TABLE DataNotes
 (
   hardware_configuration INTEGER NOT NULL,
-  data_directory         INTEGER NOT NULL,
+  data_directory         INTEGER     NULL,
   data_file              INTEGER     NULL,
   note_author            TEXT    NOT NULL,
   note_date              TEXT    NOT NULL,
