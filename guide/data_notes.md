@@ -2,15 +2,15 @@
 
 # Data Notes
 
-The `DataNotes` ...
+Table name: `DataNotes`. 
 
-| Column                                                 | Data Type | Nullable | Description |
-| ------------------------------------------------------ | --------- | -------- | ----------- |
-| [`hardware_configuration`](hardware_configurations.md) | Integer   | False    |             | 
-| [`data_directory`](data_directories.md)                | Integer   | False    |             |
-| [`data_file`](data_types.md)                           | Integer   | True     |             |
-| `note_author`                                          | Text      | False    |             |
-| `note_date`                                            | Text      | False    |             |
-| `note_content`                                         | Text      | False    |             |
+| Column                                                   | Data Type | Nullable | Description |
+| -------------------------------------------------------- | --------- | -------- | ----------- |
+| [`○ hardware_configuration`](hardware_configurations.md) | Integer   | False    | Identifies the experiment's hardware configuration associated with the note. |
+| [`○ data_directory`](data_directories.md)                | Integer   | False    | Identifies the directory address associated with the note.                   |
+| [`○ data_file`](data_types.md)                           | Integer   | True     | Identifies the data file associated with the note.                           |
+| `note_author`                                            | Text      | False    | The note author's name.                                                      |
+| `note_date`                                              | Text      | False    | The note's date and time.                                                    |
+| `note_content`                                           | Text      | False    | The note's content.                                                          |
 
-<sup>Legend: ***`Primary Key`***, [`Foreign Key`](data_notes.md).</sup>
+<sup>**Legend**: [`●`](data_directories.md) Primary Key, [`○`](data_directories.md) Foreign Key.</sup>

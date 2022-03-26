@@ -49,7 +49,7 @@ The usage examples covered below assume that the metadatabase Python module has 
 import metadatabase as mdb
 ```
 
-#### Querying Metadata
+#### Retrieving Metadata
 
 `SQLite` queries can be executed using the `retrieve` function. For instance, the following construction can be used to retrieve the model number and description of every hardware component listed in the PRIZM metadatabase.
 ```python
@@ -86,7 +86,7 @@ mdb.retrieve(("SELECT DataDirectories.directory_address, DataTypes.file_name, "
               "JOIN   ArrayElements "
               "ON     ArrayElements.array_element = ChannelGroups.array_element "
               "AND    ArrayElements.element_name = '100MHz' "
-              "ORDER BY DataDirectories.time_start "))
+              "ORDER  BY DataDirectories.time_start "))
 ```
 
 ```python
@@ -99,4 +99,5 @@ mdb.retrieve(("SELECT DataDirectories.directory_address, DataTypes.file_name, "
 ```
 
 #### Loading Data
-(Under Construction)
+
+

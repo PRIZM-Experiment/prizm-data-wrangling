@@ -2,16 +2,16 @@
 
 # Data Directories
 
-The `DataDirectories` table stores the properties of all data directory addresses, including their relationships to different data categories and deployment configurations.
+Table name: `DataDirectories`.
 
-| Column                                                 | Data Type | Nullable | Description                                                                                       |
-| ------------------------------------------------------ | --------- | -------- | ------------------------------------------------------------------------------------------------- |
-| ***`data_directory`***                                 | Integer   | False    | A number labeling each directory address.                                                         |
-| `directory_address`                                    | Text      | False    | A string containing the directory address.                                                        |
-| [`data_category`](data_categories.md)                  | Integer   | False    | The data category associated with a particular directory address.                                 |
-| [`hardware_configuration`](hardware_configurations.md) | Integer   | False    | The experiment's deployment configuration associated with the data stored in a directory address. |
-| `time_start`                                           | Real      | False    | The time at which the data stored in a directory address started being taken.                     |
-| `time_stop`                                            | Real      | False    | The time at which the data stored in a directory address stopped being recorded.                  |
-| `directory_completeness`                               | Boolean   | False    | Whether the directory is missing files.                                                           |
+| Column                                                   | Data Type | Nullable | Description                                                                                  |
+| -------------------------------------------------------- | --------- | -------- | -------------------------------------------------------------------------------------------- |
+| [`● data_directory`](data_directories.md)                | Integer   | False    | Labels each directory address.                                                               |
+| `directory_address`                                      | Text      | False    | The directory address.                                                                       |
+| [`○ data_category`](data_categories.md)                  | Integer   | False    | Identifies the data category associated with the directory address.                          |
+| [`○ hardware_configuration`](hardware_configurations.md) | Integer   | False    | Specifies the experiment's deployment configuration associated with the directory address.   |
+| `time_start`                                             | Real      | False    | Specifies the time at which the data stored in the directory address started being taken.    |
+| `time_stop`                                              | Real      | False    | Specifies the time at which the data stored in the directory address stopped being recorded. |
+| `directory_completeness`                                 | Boolean   | False    | Specified whether the directory is missing files.                                            |
 
-<sup>Legend: ***`Primary Key`***, [`Foreign Key`](data_directories.md).</sup>
+<sup>**Legend**: [`●`](data_directories.md) Primary Key, [`○`](data_directories.md) Foreign Key.</sup>

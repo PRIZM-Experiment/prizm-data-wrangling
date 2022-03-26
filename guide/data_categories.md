@@ -2,11 +2,11 @@
 
 # Data Categories 
 
-The `DataCategories` table ...
+Table name: `DataCategories`.
 
-| Column                | Data Type | Nullable | Description                           |
-| --------------------- | --------- | -------- | ------------------------------------- |
-| ***`data_category`*** | Integer   | False    | A number labeling each data category. |
-| `category_name`       | Text      | False    | A string naming the data category.    |
+| Column                                  | Data Type | Nullable | Description               |
+| --------------------------------------- | --------- | -------- | ------------------------- |
+| [`● data_category`](data_categories.md) | Integer   | False    | Labels the data category. |
+| `category_name`                         | Text      | False    | The data category name.   |
 
-<sup>Legend: ***`Primary Key`***, [`Foreign Key`](data_categories.md).</sup>
+<sup>**Legend**: [`●`](data_categories.md) Primary Key, [`○`](data_categories.md) Foreign Key.</sup>

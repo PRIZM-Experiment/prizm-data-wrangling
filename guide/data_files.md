@@ -2,14 +2,14 @@
 
 # Data Files 
 
-The `DataFiles` table ...
+Table name: `DataFiles`.
 
-| Column                                    | Data Type | Nullable | Description                               |
-| ------------------------------------------| --------- | -------- | ----------------------------------------- |
-| [`data_directory`](data_directories.md)   | Integer   | False    | A number labeling each directory address. |
-| [`directory_file`](data_types.md)         | Integer   | False    |                                           |
-| [`channel_group`](channel_group_index.md) | Integer   | False    |                                           |
-| `data_integrity`                          | Boolean   | False    | Whether the file is corrupted.            |
-| `data_quality`                            | Boolean   | True     | Whether the data is of good quality.      |
+| Column                                      | Data Type | Nullable | Description                                                       |
+| --------------------------------------------| --------- | -------- | ----------------------------------------------------------------- |
+| [`○ data_directory`](data_directories.md)   | Integer   | False    | Labels the file's directory address.                              |
+| [`○ data_file`](data_types.md)              | Integer   | False    | Specifies the file name.                                          |
+| [`○ channel_group`](channel_group_index.md) | Integer   | False    | Identifies the polarization channels associated with this file.   |
+| `data_integrity`                            | Boolean   | False    | Specifies whether the file is corrupted.                          |
+| `data_quality`                              | Boolean   | True     | Specifies whether the data stored by the file is of good quality. |
 
-<sup>Legend: ***`Primary Key`***, [`Foreign Key`](data_files.md).</sup>
+<sup>**Legend**: [`●`](data_directories.md) Primary Key, [`○`](data_directories.md) Foreign Key.</sup>
