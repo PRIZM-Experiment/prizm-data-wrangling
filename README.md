@@ -65,7 +65,7 @@ mdb.retrieve("SELECT component_model, component_description FROM HardwareCompone
  ('HIbiscus', 'HIbiscus Four-Square Antenna.')]
 ```
 
-As an example of a more complex query, below we demonstrate how to retrieve the chronologically-ordered directory addresses and file names associated with the east-west polarization data gathered by PRIZM's 100MHz antenna during the first half of 2018.
+As an example of a more complex query, the chronologically-ordered directory addresses and file names associated with the east-west polarization data gathered by PRIZM's 100MHz antenna during the first half of 2018 can be retrieved as follows.
 ```python
 mdb.retrieve(("SELECT DataDirectories.directory_address, DataTypes.file_name, "
               "FROM   DataDirectories "
