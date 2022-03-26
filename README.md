@@ -1,6 +1,6 @@
 # PRIZM Metadatabase
 
-The PRIZM metadatabase leverages `SQLite` and Python's `sqlite3` module to keep track of the experiment's data and deployment configurations. It provides scalability, ensures data consistency, and facilitates calibration and analysis by allowing complex data intersections to be retrieved in a straightfoward fashion.
+The PRIZM metadatabase leverages `SQLite` and Python's `sqlite3` module to keep track of the experiment's data and deployment configurations. It provides scalability, ensures data consistency, and facilitates calibration and analysis by allowing complex data intersections to be retrieved in a straightforward fashion.
 
 ## Dependencies
 
@@ -38,32 +38,9 @@ Finally, to conclude the installation, ensure your `PYTHONPATH` environment vari
 
 Below the Data, Hardware, and Index tables which make up the metadatabase schema are listed. Click any table to access more details about its contents and relationships to other tables in the schema. For an interactive diagram of the metadatabase schema, click [here](https://dbdiagram.io/d/6221828954f9ad109a58a8b9).
 
-- **Data**
-    - [Data Diretories](guide/data_directories.md)
-    - [Data Categories](guide/data_categories.md)
-    - [Data Types](guide/data_types.md)
-    - [Data Files](guide/data_files.md)
-    - [Data Notes](guide/data_notes.md)
-- **Hardware**
-    - [Hardware Configurations](guide/hardware_configurations.md)
-    - [Array Elements](guide/array_elements.md)
-    - [Hardware Components](guide/hardware_components.md)
-    - [Component Groups](guide/component_groups.md)
-    - [Component Groupings](guide/component_groupings.md)
-    - [First Stages](guide/first_stages.md)
-    - [Second Stages](guide/second_stages.md)
-    - [First Stage Groups](guide/first_stage_groups.md)
-    - [Second Stage Groups](guide/second_stage_groups.md)
-    - [Channel Orientations](guide/channel_orientations.md)
-    - [Hardware Channels](guide/hardware_channels.md)
-    - [Channel Groups](guide/channel_groups.md)
-    - [Hardware Notes](guide/hardware_notes.md)
-- **Index**
-    - [Component Group Index](guide/component_group_index.md)
-    - [Component Grouping Index](guide/component_grouping_index.md)
-    - [First Stage Group Index](guide/first_stage_group_index.md)
-    - [Second Stage Group Index](guide/second_stage_group_index.md)
-    - [Channel Group Index](guide/channel_group_index.md)
+| Data | Hardware | Index |
+| ---- | -------- | ----- |
+| [Data Diretories](guide/data_directories.md)<br/> [Data Categories](guide/data_categories.md)<br/> [Data Types](guide/data_types.md)<br/> [Data Files](guide/data_files.md)<br/> [Data Notes](guide/data_notes.md) | [Hardware Configurations](guide/hardware_configurations.md)<br/> [Array Elements](guide/array_elements.md)<br/> [Hardware Components](guide/hardware_components.md)<br/> [Component Groups](guide/component_groups.md)<br/> [Component Groupings](guide/component_groupings.md)<br/> [First Stages](guide/first_stages.md)<br/> [Second Stages](guide/second_stages.md)<br/> [First Stage Groups](guide/first_stage_groups.md)<br/> [Second Stage Groups](guide/second_stage_groups.md)<br/> [Channel Orientations](guide/channel_orientations.md)<br/> [Hardware Channels](guide/hardware_channels.md)<br/> [Channel Groups](guide/channel_groups.md)<br/> [Hardware Notes](guide/hardware_notes.md) | [Component Group Index](guide/component_group_index.md)<br/> [Component Grouping Index](guide/component_grouping_index.md)<br/> [First Stage Group Index](guide/first_stage_group_index.md)<br/> [Second Stage Group Index](guide/second_stage_group_index.md)<br/> [Channel Group Index](guide/channel_group_index.md) |
 
 ### Usage
 
@@ -75,16 +52,16 @@ import metadatabase as mdb
 #### Querying Metadata
 
 ```python
-mdb.retrieve("SELECT * FROM HardwareComponents")
+mdb.retrieve("SELECT component_model, component_description FROM HardwareComponents")
 ```
 
 ```python
-[(0, 'VAT-3+', 'Mini-Circuits', '3 dB Fixed Attenuator, DC - 6000 MHz, 50 Ohm.'),
- (1, '6A', 'APITech Inmet', '3 dB Fixed Coaxial Attenuator, SMA Models A, DC - 6000 MHz.'),
- (2, 'SLP-200+', 'Mini-Circuits', 'Lumped LC Low Pass Filter, DC - 190 MHz, 50 Ohm.'),
- (3, 'SHP-25+', 'Mini-Circuits', 'Lumped LC High Pass Filter, 27.5 MHz - 800 MHz.'),
+[('VAT-3+',   '3 dB Fixed Attenuator, DC - 6000 MHz, 50 Ohm.'),
+ ('6A',       '3 dB Fixed Coaxial Attenuator, SMA Models A, DC - 6000 MHz.'),
+ ('SLP-200+', 'Lumped LC Low Pass Filter, DC - 190 MHz, 50 Ohm.'),
+ ('SHP-25+',  'Lumped LC High Pass Filter, 27.5 MHz - 800 MHz.'),
  ...
- (10, 'HIbiscus', 'RhoTech and Pinion & Adams', 'HIbiscus Four-Square Antenna.')]
+ ('HIbiscus', 'HIbiscus Four-Square Antenna.')]
 ```
 #### Loading Data
 (Under Construction)
