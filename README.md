@@ -36,7 +36,7 @@ Finally, to conclude the installation, ensure your `PYTHONPATH` environment vari
 
 ### Schema
 
-Below the Data, Hardware, and Index tables which make up the metadatabase schema are listed. Click any table to access more details about its contents and relationships to other tables in the schema. For an interactive diagram of the metadatabase schema, click [here](https://dbdiagram.io/d/6221828954f9ad109a58a8b9).
+Below the Data, Hardware, and Index tables which make up the metadatabase schema are listed. Click on any table link to access more details about its contents and relationships to other tables in the schema. For an interactive diagram of the metadatabase schema, click [here](https://dbdiagram.io/d/6221828954f9ad109a58a8b9).
 
 | Data | Hardware | Index |
 | ---- | -------- | ----- |

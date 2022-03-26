@@ -1,11 +1,11 @@
-<sup>**← [List of Tables](tables.md)**</sup>
+<sup>**← [List of Tables](schema.md)**</sup>
 
 # Data Directories
 
 The `DataDirectories` table stores the properties of all data directory addresses, including their relationships to different data categories and deployment configurations.
 
 | Column                                                 | Data Type | Nullable | Description                                                                                       |
-| ------------------------------------------------------ | ----------| -------- | ------------------------------------------------------------------------------------------------- |
+| ------------------------------------------------------ | --------- | -------- | ------------------------------------------------------------------------------------------------- |
 | ***`data_directory`***                                 | Integer   | False    | A number labeling each directory address.                                                         |
 | `directory_address`                                    | Text      | False    | A string containing the directory address.                                                        |
 | [`data_category`](data_categories.md)                  | Integer   | False    | The data category associated with a particular directory address.                                 |

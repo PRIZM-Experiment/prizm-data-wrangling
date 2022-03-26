@@ -1,0 +1,7 @@
+# Schema
+
+Click on any table link to access more details about its contents and relationships to other tables in the schema.
+
+| Data | Hardware | Index |
+| ---- | -------- | ----- |
+| [Data Diretories](data_directories.md)<br/> [Data Categories](data_categories.md)<br/> [Data Types](data_types.md)<br/> [Data Files](data_files.md)<br/> [Data Notes](data_notes.md)<br/><br/><br/><br/><br/><br/><br/><br/><br/> | [Hardware Configurations](hardware_configurations.md)<br/> [Array Elements](array_elements.md)<br/> [Hardware Components](hardware_components.md)<br/> [Component Groups](component_groups.md)<br/> [Component Groupings](component_groupings.md)<br/> [First Stages](first_stages.md)<br/> [Second Stages](second_stages.md)<br/> [First Stage Groups](first_stage_groups.md)<br/> [Second Stage Groups](second_stage_groups.md)<br/> [Channel Orientations](channel_orientations.md)<br/> [Hardware Channels](hardware_channels.md)<br/> [Channel Groups](channel_groups.md)<br/> [Hardware Notes](hardware_notes.md) | [Component Group Index](component_group_index.md)<br/> [Component Grouping Index](component_grouping_index.md)<br/> [First Stage Group Index](first_stage_group_index.md)<br/> [Second Stage Group Index](second_stage_group_index.md)<br/> [Channel Group Index](channel_group_index.md)<br/><br/><br/><br/><br/><br/><br/><br/><br/> |
