@@ -51,6 +51,7 @@ import metadatabase as mdb
 
 #### Querying Metadata
 
+`SQLite` queries can be executed using the `retrieve` function. For instance, the following construction can be used to retrieve the model number and description of every hardware component listed in the PRIZM metadatabase.
 ```python
 mdb.retrieve("SELECT component_model, component_description FROM HardwareComponents")
 ```
@@ -63,5 +64,39 @@ mdb.retrieve("SELECT component_model, component_description FROM HardwareCompone
  ...
  ('HIbiscus', 'HIbiscus Four-Square Antenna.')]
 ```
+
+As an example of a more complex query, below we demonstrate how to retrieve the chronologically-ordered directory addresses and file names associated with the east-west polarization data gathered by PRIZM's 100MHz antenna during the first half of 2018.
+```python
+mdb.retrieve(("SELECT DataDirectories.directory_address, DataTypes.file_name, "
+              "FROM   DataDirectories "
+              "JOIN   DataCategories "
+              "ON     DataDirectories.data_category = DataCategories.data_category "
+              "AND    DataCategories.category_name = 'Antenna' "
+              "JOIN   DataFiles "
+              "ON     DataDirectories.data_directory = DataFiles.data_directory "
+              "AND    DataDirectories.time_start <= strftime('%s','2018-07-01 00:00:00') "
+              "AND    DataDirectories.time_stop >= strftime('%s','2018-01-01 00:00:00') "
+              "JOIN   DataTypes "
+              "ON     DataFiles.data_file = DataTypes.data_file "
+              "JOIN   ChannelGroups "
+              "ON     DataFiles.channel_group = ChannelGroups.channel_group "
+              "JOIN   ChannelOrientations "
+              "ON     ChannelOrientations.channel_orientation = ChannelGroups.channel_orientation "
+              "AND    ChannelOrientations.orientation_name = 'EW' "
+              "JOIN   ArrayElements "
+              "ON     ArrayElements.array_element = ChannelGroups.array_element "
+              "AND    ArrayElements.element_name = '100MHz' "
+              "ORDER BY DataDirectories.time_start "))
+```
+
+```python
+[('/marion2018/data_100MHz/15236/1523601399', 'acc_cnt1.raw'),
+ ('/marion2018/data_100MHz/15236/1523601399', 'acc_cnt2.raw'),
+ ('/marion2018/data_100MHz/15236/1523601399', 'cross_imag.scio.bz2'),
+ ('/marion2018/data_100MHz/15236/1523601399', 'cross_real.scio.bz2'),
+ ...
+ ('/marion2018/data_100MHz/15302/1530293230', 'time_sys_stop.raw')]
+```
+
 #### Loading Data
 (Under Construction)
