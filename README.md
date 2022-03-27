@@ -65,7 +65,7 @@ mdb.retrieve("SELECT component_model, component_description FROM HardwareCompone
  ('HIbiscus', 'HIbiscus Four-Square Antenna.')]
 ```
 
-As an example of a more complex query, the directory addresses and file names associated with the east-west polarization data gathered by PRIZM's 100MHz antenna during the first half of 2018 can be retrieved in chronological order as follows.
+As an example of a more complex query, the directory addresses and file names associated with the east-west polarization data gathered the 100MHz PRIZM antenna during the first half of 2018 can be retrieved in chronological order as follows.
 ```python
 mdb.retrieve(("SELECT DataDirectories.directory_address, DataTypes.file_name, "
               "FROM   DataDirectories "
@@ -100,7 +100,7 @@ mdb.retrieve(("SELECT DataDirectories.directory_address, DataTypes.file_name, "
 
 #### Loading Data
 
-PRIZM data can be loaded through the metadatabase using the `load` function. This function receives lists as arguments, and returns a dictionary containing the data matching all combinations of these input list elements. This is illustrated below, where absolutelye all data collected around April 22-23, 2018 is loaded.
+PRIZM data can be loaded through the metadatabase using the `load` function. This function receives lists as arguments, and returns a dictionary containing the data matching all combinations of these input list elements. This is illustrated below, where absolutely all data collected around April 22-23, 2018 is loaded.
 ```python
 mdb.load(categories=['Antenna', 'Switch', 'Temperature'],
          instruments=['100MHz', '70MHz'],

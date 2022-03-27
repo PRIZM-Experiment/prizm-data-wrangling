@@ -1,6 +1,6 @@
 # Schema
 
-Click on any table link to access more details about its contents and relationships to other tables in the schema.
+Select a table to learn more about its structure and relationship to other tables in the schema. For an interactive diagram, click [here](https://dbdiagram.io/d/6221828954f9ad109a58a8b9).
 
 | Data | Hardware | Index |
 | ---- | -------- | ----- |
