@@ -1,12 +1,8 @@
-/*
-sqlite3 < build.sql
-*/
-
 -- Initializes the metadatabase binary file.
 .open metadatabase.db
 
 -- Builds the metadatabase tables.
-.read schema.sql
+.read ./source/schema.sql
 
 -- Populates the metadatabase.
-.read metadata.sql
+.read ./source/metadata.sql
