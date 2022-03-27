@@ -36,7 +36,7 @@ Finally, to conclude the installation, ensure your `PYTHONPATH` environment vari
 
 ### Schema
 
-Below the Data, Hardware, and Index tables which make up the metadatabase schema are listed. Click on any table link to access more details about its contents and relationships to other tables in the schema. For an interactive diagram of the metadatabase schema, click [here](https://dbdiagram.io/d/6221828954f9ad109a58a8b9).
+Below the Data, Hardware, and Index tables which make up the PRIZM metadatabase are listed. Select a table to learn more about its structure and relationship to other tables in the schema. For an interactive diagram, click [here](https://dbdiagram.io/d/6221828954f9ad109a58a8b9).
 
 | Data | Hardware | Index |
 | ---- | -------- | ----- |
@@ -44,14 +44,14 @@ Below the Data, Hardware, and Index tables which make up the metadatabase schema
 
 ### Usage
 
-The usage examples covered below assume that the metadatabase Python module has been imported as follows.
+The usage examples covered below assume the PRIZM metadatabase module has been imported under the following alias. 
 ```python
 import metadatabase as mdb
 ```
 
 #### Retrieving Metadata
 
-SQLite queries can be executed using the `retrieve` function. For instance, the following construction can be used to retrieve the model number and description of every hardware component listed in the PRIZM metadatabase.
+SQLite queries can be executed against the metadatabase using the `retrieve` function. For instance, the following construction can be used to retrieve the model number and description of every hardware component listed in the PRIZM metadatabase.
 ```python
 mdb.retrieve("SELECT component_model, component_description FROM HardwareComponents")
 ```
@@ -65,7 +65,7 @@ mdb.retrieve("SELECT component_model, component_description FROM HardwareCompone
  ('HIbiscus', 'HIbiscus Four-Square Antenna.')]
 ```
 
-As an example of a more complex query, the chronologically-ordered directory addresses and file names associated with the east-west polarization data gathered by PRIZM's 100MHz antenna during the first half of 2018 can be retrieved as follows.
+As an example of a more complex query, the directory addresses and file names associated with the east-west polarization data gathered by PRIZM's 100MHz antenna during the first half of 2018 can be retrieved in chronological order as follows.
 ```python
 mdb.retrieve(("SELECT DataDirectories.directory_address, DataTypes.file_name, "
               "FROM   DataDirectories "
@@ -100,4 +100,13 @@ mdb.retrieve(("SELECT DataDirectories.directory_address, DataTypes.file_name, "
 
 #### Loading Data
 
-
+PRIZM data can be loaded through the metadatabase using the `load` function. This function receives lists as arguments, and returns a dictionary containing the data matching all combinations of these input list elements. This is illustrated below, where absolutelye all data collected around April 22-23, 2018 is loaded.
+```python
+mdb.load(categories=['Antenna', 'Switch', 'Temperature'],
+         instruments=['100MHz', '70MHz'],
+         channels=['EW', 'NS'],
+         intervals=[(1524400000.0,1524500000.0), ],
+         quality=['1', '0', 'NULL'],
+         integrity=['1', '0', 'NULL'],
+         completeness=['1', '0', 'NULL'])
+```
