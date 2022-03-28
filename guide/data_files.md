@@ -1,4 +1,4 @@
-<sup>**← [List of Tables](../README.md###Schema)**</sup>
+<sup>**← [List of Tables](../README.md#schema)**</sup>
 
 # Data Files
 
@@ -12,4 +12,4 @@ Table name: `DataFiles`.
 | `data_integrity`                            | Boolean   | False    | Specifies whether the file is corrupted.                          |
 | `data_quality`                              | Boolean   | True     | Specifies whether the data stored by the file is of good quality. |
 
-<sup>**Legend**: [`●`](data_files.md) Primary Key, [`○`](data_files.md) Foreign Key, [`◌`](data_files.md) Composite Key.</sup>
+<sup>**Legend**: [`○`](data_files.md) Foreign Key, [`◌`](data_files.md) Composite Key.</sup>

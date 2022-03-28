@@ -1,4 +1,4 @@
-<sup>**← [List of Tables](schema.md)**</sup>
+<sup>**← [List of Tables](../README.md#schema)**</sup>
 
 # Array Elements
 
@@ -9,4 +9,4 @@ Table name: `ArrayElements`.
 | [`● array_element`](array_elements.md) | Integer   | False    | Uniquely labels each array element. |
 | `element_name`                         | Text      | False    | Specifies the array element name.   |
 
-<sup>**Legend**: [`●`](array_elements.md) Primary Key, [`○`](array_elements.md) Foreign Key.</sup>
+<sup>**Legend**: [`●`](array_elements.md) Primary Key.</sup>

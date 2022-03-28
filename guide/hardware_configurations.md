@@ -1,4 +1,4 @@
-<sup>**← [List of Tables](schema.md)**</sup>
+<sup>**← [List of Tables](../README.md#schema)**</sup>
 
 # Hardware Configurations
 

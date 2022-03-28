@@ -1,4 +1,4 @@
-<sup>**← [List of Tables](schema.md)**</sup>
+<sup>**← [List of Tables](../README.md#schema)**</sup>
 
 # Data Types
 
@@ -12,4 +12,4 @@ Table name: `DataTypes`.
 | `data_type`                    | Text      | False    | Specifies the type of data stored by the file.                      |
 | `data_description`             | Text      | False    | A short description of data file.                                   |
 
-<sup>**Legend**: [`●`](data_types.md) Primary Key, [`○`](data_types.md) Foreign Key.</sup>
+<sup>**Legend**: [`●`](data_types.md) Primary Key.</sup>

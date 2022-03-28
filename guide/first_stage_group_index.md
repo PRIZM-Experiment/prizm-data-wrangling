@@ -1,4 +1,4 @@
-<sup>**← [List of Tables](schema.md)**</sup>
+<sup>**← [List of Tables](../README.md#schema)**</sup>
 
 # First Stage Group Index
 
@@ -9,4 +9,4 @@ Table name: `FirstStageGroupIndex`.
 | [`● first_stage_group`](first_stage_group_index.md) | Integer   | False    | Uniquely labels each group of first stage electronics enclosures. |
 | `group_name`                                        | Text      | False    | Specifies the name of the first stage electronics group.          |
 
-<sup>**Legend**: [`●`](first_stage_group_index.md) Primary Key, [`○`](first_stage_group_index.md) Foreign Key.</sup>
+<sup>**Legend**: [`●`](first_stage_group_index.md) Primary Key.</sup>

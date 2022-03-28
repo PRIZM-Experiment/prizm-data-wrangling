@@ -1,4 +1,4 @@
-<sup>**← [List of Tables](schema.md)**</sup>
+<sup>**← [List of Tables](../README.md#schema)**</sup>
 
 # Data Notes
 
@@ -13,4 +13,4 @@ Table name: `DataNotes`.
 | `note_date`                                              | Text      | False    | Specifies the note's date and time.                                          |
 | `note_content`                                           | Text      | False    | The note's content.                                                          |
 
-<sup>**Legend**: [`●`](data_notes.md) Primary Key, [`○`](data_notes.md) Foreign Key.</sup>
+<sup>**Legend**: [`○`](data_notes.md) Foreign Key.</sup>

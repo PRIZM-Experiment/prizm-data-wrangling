@@ -18,7 +18,7 @@ git clone https://github.com/PRIZM-Experiment/prizm-data-wrangling.git
 Run the following commmand within the repository's directory.
 ```bash
 chmod +x build.sh
-./build.sh
+./install.sh
 ```
 
 If successful, after a few minutes a binary file named `metadatabase.db` will have been generated. This file encapsulates all of PRIZM's metadata, and can be placed in whichever directory is most convenient for the user.
