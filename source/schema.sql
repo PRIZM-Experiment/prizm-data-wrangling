@@ -51,7 +51,9 @@ CREATE TABLE DataFiles
 
   FOREIGN KEY (data_directory) REFERENCES DataDirectories (data_directory),
   FOREIGN KEY (data_file) REFERENCES DataTypes (data_file),
-  FOREIGN KEY (channel_group) REFERENCES ChannelGroupIndex (channel_group)
+  FOREIGN KEY (channel_group) REFERENCES ChannelGroupIndex (channel_group),
+
+  PRIMARY KEY (data_directory, data_file)
 );
 
 CREATE TABLE DataNotes
