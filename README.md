@@ -15,9 +15,9 @@ Clone this repository within the directory of your choice.
 git clone https://github.com/PRIZM-Experiment/prizm-data-wrangling.git
 ```
 
-Run the following commmand within the repository's directory.
+Run the following commmands within the repository's directory.
 ```bash
-chmod +x build.sh
+chmod +x install.sh
 ./install.sh
 ```
 
