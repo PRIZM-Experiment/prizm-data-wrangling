@@ -9,8 +9,8 @@ from scio import scio
 # Loads the data and metadata directories as set by the user.
 _directories = json.load(open('settings.json', 'r'))
 
-def retrieve(query):
-    """ Retrieves information from the metadatabase according to the input query. """
+def execute(query):
+    """ Executes the input query against the metadatabase. """
 
     # Connects to the MDB and initializes a cursor.
     connection = sqlite3.connect(_directories['metadata'] + '/metadatabase.db')
@@ -73,7 +73,7 @@ def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz'
     query = "SELECT classification_name, file_name, file_alias, data_type, COUNT(file_alias) FROM (" + query + ") GROUP BY classification_name, file_alias"
 
     # Queries the MDB.
-    result = retrieve(query)
+    result = execute(query)
 
     return result
 
@@ -126,11 +126,11 @@ def path(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz',
     query = "SELECT classification_name, file_path, file_name, file_alias, data_type FROM (" + query + ") ORDER BY classification_name, time_start"
 
     # Queries the MDB.
-    result = retrieve(query)
+    result = execute(query)
 
     return result
 
-def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100', '70'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
+def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
     """ Loads all files matching the input arguments. """
 
     # Initializes auxiliary data-loading dictionaries.
