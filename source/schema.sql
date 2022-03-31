@@ -192,7 +192,9 @@ CREATE TABLE HardwareChannels
   FOREIGN KEY (second_stage) REFERENCES SecondStages (second_stage),
   FOREIGN KEY (component_group) REFERENCES ComponentGroupIndex (component_group),
   FOREIGN KEY (channel_orientation) REFERENCES ChannelOrientations (channel_orientation),
-  FOREIGN KEY (array_element) REFERENCES ArrayElements (array_element)
+  FOREIGN KEY (array_element) REFERENCES ArrayElements (array_element),
+
+  PRIMARY KEY (hardware_configuration, second_stage, component_group, channel_orientation, array_element)
 );
 
 CREATE TABLE HardwareComponents
