@@ -101,6 +101,10 @@ mdb.execute(("SELECT DataDirectories.directory_address, DataTypes.file_name, "
 
 #### Loading Data
 
+```diff
+! This section is still under construction !
+```
+
 PRIZM data can be loaded through the metadatabase using the `load` function. This function receives lists as arguments, and returns a dictionary containing the data matching all combinations of these input lists' elements. This is illustrated below, where absolutely all data collected around April 22-23, 2018 is loaded.
 ```python
 mdb.load(categories=['Antenna', 'Switch', 'Temperature'],
