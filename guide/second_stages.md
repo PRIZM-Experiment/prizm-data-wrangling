@@ -6,7 +6,7 @@ Table name: `SecondStages`.
 
 | Column                                                   | Data Type | Nullable | Description                                                                               |
 | -------------------------------------------------------- | --------- | -------- | ----------------------------------------------------------------------------------------- |
-| [`● second_stages`](second_stages.md)                    | Integer   | False    | Uniquely labels each second stage electronics enclosure.                                  |
+| [`● second_stage`](second_stages.md)                     | Integer   | False    | Uniquely labels each second stage electronics enclosure.                                  |
 | `stage_name`                                             | Text      | False    | Specifies the name of the second stage electronics enclosure.                             |
 | [`○ component_grouping`](component_groupings.md)         | Integer   | False    | Identifies the component grouping associated with the second stage electronics enclosure. |
 

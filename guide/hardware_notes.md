@@ -17,4 +17,4 @@ Table name: `HardwareNotes`.
 | `note_date`                                              | Text      | False    | Specifies the note's date and time.                                          |
 | `note_content`                                           | Text      | False    | The note's content.                                                          |
 
-<sup>**Legend**: [`○`](data_notes.md) Foreign Key.</sup>
+<sup>**Legend**: [`○`](hardware_notes.md) Foreign Key.</sup>

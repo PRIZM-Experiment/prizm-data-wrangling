@@ -12,4 +12,4 @@ Table name: `HardwareChannels`.
 | [`○ ◌ channel_orientation`](channel_orientations.md)       | Integer   | False    | Identifies a channel orientation.                |
 | [`○ ◌ array_element`](array_elements.md)                   | Integer   | False    | Identifies an array element.                     |
 
-<sup>**Legend**: [`○`](data_directories.md) Foreign Key, [`◌`](data_files.md) Composite Key.</sup>
+<sup>**Legend**: [`○`](hardware_channels.md) Foreign Key, [`◌`](hardware_channels.md) Composite Key.</sup>

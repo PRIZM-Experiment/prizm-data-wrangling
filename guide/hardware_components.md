@@ -11,4 +11,4 @@ Table name: `HardwareComponents`.
 | `component_manufacturer`                                 | Text      | True     | Specifies the component manufacturer.          |
 | `component_description`                                  | Text      | True     | A short description of the hardware component. |
 
-<sup>**Legend**: [`●`](hardware_components.md) Primary Key, [`○`](hardware_components.md) Foreign Key.</sup>
+<sup>**Legend**: [`●`](hardware_components.md) Primary Key.</sup>
