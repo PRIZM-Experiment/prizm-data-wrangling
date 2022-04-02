@@ -191,6 +191,9 @@ class SpectralData:
 
         """
 
+        if type(trim) != tuple:
+            raise Exception(f"trim should be a tuple not {type(trim)}")
+
         # Trim the flags, probably because when you switch the data that process is not as instantenous as you'd hope
         # So the timestamps before and after the switch are probably dodgy
         if self.switch_flags and sum(trim) > 0:
