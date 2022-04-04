@@ -101,17 +101,18 @@ mdb.execute(("SELECT DataDirectories.directory_address, DataTypes.file_name, "
 
 #### Loading Data
 
-```diff
-! This section is still under construction !
-```
-
-PRIZM data can be loaded through the metadatabase using the `load` function. This function receives lists as arguments, and returns a dictionary containing the data matching all combinations of these input lists' elements. This is illustrated below, where absolutely all data collected around April 22-23, 2018 is loaded.
+PRIZM data can be loaded through the metadatabase using the `load` function. This function receives lists as arguments, and returns a dictionary containing the data matching all combinations of these input lists' elements. This is illustrated below, where absolutely all data collected around April 22–23, 2018 is loaded.
 ```python
 mdb.load(categories=['Antenna', 'Switch', 'Temperature'],
          instruments=['100MHz', '70MHz'],
          channels=['EW', 'NS'],
-         intervals=[(1524400000.0,1524500000.0), ],
+         intervals=[(1524400000.0,1524500000.0),],
          quality=['1', '0', 'NULL'],
          integrity=['1', '0', 'NULL'],
          completeness=['1', '0', 'NULL'])
+```
+
+Alternatively, curated data selections suitable for specific analyses can be loaded through the metadatabase by referencing certain pickle files, such as those are available under this repository's [`../selections`](selections/) subdirectory. As demonstrated below, the pickle file `../selections/2018_100MHz_EW.p` can be referenced to load all the good-quality east-west polarization data gathered by the 100MHz antenna in 2018.
+```python
+mdb.load(selection='./selections/2018_100MHz_EW.p')
 ```
