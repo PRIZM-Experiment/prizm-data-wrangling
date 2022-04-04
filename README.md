@@ -112,7 +112,7 @@ mdb.load(categories=['Antenna', 'Switch', 'Temperature'],
          completeness=['1', '0', 'NULL'])
 ```
 
-Alternatively, curated data selections suitable for specific analyses can be loaded through the metadatabase by referencing certain pickle files, such as those are available under this repository's [`../selections`](selections/) subdirectory. As demonstrated below, the pickle file `../selections/2018_100MHz_EW.p` can be referenced to load all the good-quality east-west polarization data gathered by the 100MHz antenna in 2018.
+Alternatively, curated data selections suitable for specific analyses can be loaded through the metadatabase by referencing certain pickle files, such as those available under this repository's [`../selections`](selections/) subdirectory. As demonstrated below, the pickle file `../selections/2018_100MHz_EW.p` can be referenced to load all the good-quality east-west polarization data gathered by the 100MHz antenna in 2018.
 ```python
 mdb.load(selection='./selections/2018_100MHz_EW.p')
 ```
