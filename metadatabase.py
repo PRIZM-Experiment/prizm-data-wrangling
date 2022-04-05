@@ -1,13 +1,25 @@
 import sqlite3
 import itertools
 import collections
+import os
 import json
 import pickle
 import numpy as np
 from scio import scio
+from metadatabase import __file__ as _path
 
-# Loads the data and metadata directories as set by the user.
-_directories = json.load(open('settings.json', 'r'))
+
+# Global objects containing the directory addresses of: this module, the metadata, and PRIZM data.
+_path = os.path.dirname(_path)
+_directories = json.load(open(_path + '/settings.json', 'r'))
+
+def source():
+    """ Sources the data and metadata directories from the 'settings.json' file edited by the user. """
+
+    # Loads the data and metadata directories from the 'settings.json' file.
+    _directories = json.load(open(_path + '/settings.json', 'r'))
+
+    return
 
 def execute(query):
     """ Executes the input query against the metadatabase. """
@@ -25,7 +37,7 @@ def execute(query):
 
     return result_set
 
-def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
+def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=[1, 0, 'NULL'], integrity=[1, 0, 'NULL'], completeness=[1, 0, 'NULL']):
     """ Collects the classification, name, alias, data type, and count of each file of the same type matching the input arguments. """
 
     # Initializes the SQLite query.
@@ -76,7 +88,7 @@ def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz'
 
     return result_set
 
-def locate(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL']):
+def locate(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=[1, 0, 'NULL'], integrity=[1, 0, 'NULL'], completeness=[1, 0, 'NULL']):
     """ Collects the classification, path, name, alias, and data type of each file matching the input arguments. """
 
     # Initializes the SQLite query.
@@ -171,7 +183,7 @@ def _load(count_result_set, locate_result_set):
 
     return output
 
-def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=['1', '0', 'NULL'], integrity=['1', '0', 'NULL'], completeness=['1', '0', 'NULL'], selection=None):
+def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=[1, 0, 'NULL'], integrity=[1, 0, 'NULL'], completeness=[1, 0, 'NULL'], selection=None):
     """ Loads all data files matching the input arguments. """
 
     if selection == None:
