@@ -5,7 +5,10 @@ import os
 import json
 import pickle
 import numpy as np
-from scio import scio
+try:
+    import scio.scio as scio
+except:
+    import scio
 from metadatabase import __file__ as _path
 
 
