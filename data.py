@@ -86,5 +86,5 @@ def load(directory_addresses=['~'], classification_catalog={}, file_catalog={}):
     for ((classification_name, orientation_name, file_extension, file_alias, data_type), file_count) in collections.Counter([(classification_name, orientation_name, file_extension, file_alias, data_type) for (classification_name, orientation_name, _, file_extension, file_alias, data_type) in locate_result_set]).items():
         count_result_set.append((classification_name, orientation_name, file_extension, file_alias, data_type, file_count)) 
 
-    return _load(count_result_set, locate_result_set)
+    return _load(count_result_set, locate_result_set, '')
 

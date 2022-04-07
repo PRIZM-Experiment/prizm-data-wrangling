@@ -161,7 +161,7 @@ def locate(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz
 
     return result_set
 
-def _load(count_result_set, locate_result_set):
+def _load(count_result_set, locate_result_set, parent_directory):
     """ Loads all files matching the result sets outputted by the `count` and `locate` functions. """
 
     # Initializes auxiliary data-loading dictionaries.
@@ -180,9 +180,9 @@ def _load(count_result_set, locate_result_set):
         index = counter[classification_name][orientation_name][file_alias]
 
         if file_extension == 'scio':
-            data[classification_name][orientation_name][file_alias][index] = scio.read(_directories['data'] + file_path)
+            data[classification_name][orientation_name][file_alias][index] = scio.read(parent_directory + file_path)
         if file_extension == 'raw':
-            data[classification_name][orientation_name][file_alias][index] = np.fromfile(_directories['data'] + file_path, data_type)
+            data[classification_name][orientation_name][file_alias][index] = np.fromfile(parent_directory + file_path, data_type)
 
         rows[classification_name][orientation_name][file_alias][index+1] = rows[classification_name][orientation_name][file_alias][index] + len(data[classification_name][orientation_name][file_alias][index])
         counter[classification_name][orientation_name][file_alias] += 1
@@ -223,7 +223,7 @@ def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz',
         # Loads and unpacks the input data selection.
         count_result_set, locate_result_set = pickle.load(open(selection, 'rb'))
 
-    return _load(count_result_set, locate_result_set)
+    return _load(count_result_set, locate_result_set, _directories['data'])
 
 # ##################### OLD ##########################
 #
