@@ -28,7 +28,7 @@ def add_switch_flags(data, instruments=['100MHz', '70MHz'], channels=['EW', 'NS'
                 upper_bound = data[instrument][channel]['time_sys_stop'] <= stop
                 flags[lower_bound*upper_bound] = True
 
-            data[instrument][channel]['Flags'][entry] = flags
+            data[instrument][channel]['Flags'][file_alias] = flags
 
     return
 
