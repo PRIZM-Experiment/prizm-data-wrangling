@@ -41,7 +41,7 @@ def execute(query):
     return result_set
 
 def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=[1, 0, 'NULL'], integrity=[1, 0, 'NULL'], completeness=[1, 0, 'NULL']):
-    """ Collects the classification, name, alias, data type, and count of each file of the same type matching the input arguments. """
+    """ Collects the classification, extension, alias, data type, and count of each file of the same type matching the input arguments. """
 
     # Initializes the SQLite query.
     query = ""
@@ -53,7 +53,11 @@ def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz'
                  "            ELSE DataCategories.category_name "
                  "       END "
                  "       AS classification_name, "
-                 "       DataTypes.file_name AS file_name, "
+                 "       CASE "
+                 "            WHEN DataTypes.file_name LIKE '%.scio%' THEN 'scio' "
+                 "            WHEN DataTypes.file_name LIKE '%.raw%' THEN 'raw' "
+                 "       END "
+                 "       AS file_extension, "
                  "       CASE "
                  "            WHEN DataTypes.file_alias LIKE 'time_sys_%' THEN ChannelOrientations.orientation_name "
                  "            WHEN DataTypes.file_alias LIKE 'pol%' THEN ChannelOrientations.orientation_name "
@@ -89,7 +93,7 @@ def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz'
                  "ON     ArrayElements.array_element = ChannelGroups.array_element "
                 f"AND    ArrayElements.element_name = '{instrument}' ") + "UNION "*bool(combination) + query
 
-    query = "SELECT classification_name, orientation_name, file_name, file_alias, data_type, COUNT(file_alias) FROM (" + query + ") GROUP BY classification_name, orientation_name, file_alias"
+    query = "SELECT classification_name, orientation_name, file_extension, file_alias, data_type, COUNT(file_alias) FROM (" + query + ") GROUP BY classification_name, orientation_name, file_alias"
 
     # Queries the MDB.
     result_set = execute(query)
@@ -97,7 +101,7 @@ def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz'
     return result_set
 
 def locate(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=[1, 0, 'NULL'], integrity=[1, 0, 'NULL'], completeness=[1, 0, 'NULL']):
-    """ Collects the classification, path, name, alias, and data type of each file matching the input arguments. """
+    """ Collects the classification, path, extension, alias, and data type of each file matching the input arguments. """
 
     # Initializes the SQLite query.
     query = ""
@@ -111,7 +115,11 @@ def locate(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz
                  "       AS classification_name, "
                  "       DataDirectories.directory_address || '/' || DataTypes.file_name AS file_path, "
                  "       DataDirectories.time_start AS time_start, "
-                 "       DataTypes.file_name AS file_name, "
+                 "       CASE "
+                 "            WHEN DataTypes.file_name LIKE '%.scio%' THEN 'scio' "
+                 "            WHEN DataTypes.file_name LIKE '%.raw%' THEN 'raw' "
+                 "       END "
+                 "       AS file_extension, "
                  "       CASE "
                  "            WHEN DataTypes.file_alias LIKE 'time_sys_%' THEN ChannelOrientations.orientation_name "
                  "            WHEN DataTypes.file_alias LIKE 'pol%' THEN ChannelOrientations.orientation_name "
@@ -146,7 +154,7 @@ def locate(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz
                  "ON     ArrayElements.array_element = ChannelGroups.array_element "
                 f"AND    ArrayElements.element_name = '{instrument}' ") + "UNION "*bool(combination) + query
 
-    query = "SELECT classification_name, orientation_name, file_path, file_name, file_alias, data_type FROM (" + query + ") ORDER BY classification_name, orientation_name, time_start"
+    query = "SELECT classification_name, orientation_name, file_path, file_extension, file_alias, data_type FROM (" + query + ") ORDER BY classification_name, orientation_name, time_start"
 
     # Queries the MDB.
     result_set = execute(query)
@@ -168,12 +176,12 @@ def _load(count_result_set, locate_result_set):
         counter[classification_name][orientation_name][file_alias] = 0
 
     # Loads each file matching the input arguments.
-    for (classification_name, orientation_name, file_path, file_name, file_alias, data_type) in locate_result_set:
+    for (classification_name, orientation_name, file_path, file_extension, file_alias, data_type) in locate_result_set:
         index = counter[classification_name][orientation_name][file_alias]
 
-        if '.scio' in file_name:
+        if file_extension == 'scio':
             data[classification_name][orientation_name][file_alias][index] = scio.read(_directories['data'] + file_path)
-        if '.raw' in file_name:
+        if file_extension == 'raw':
             data[classification_name][orientation_name][file_alias][index] = np.fromfile(_directories['data'] + file_path, data_type)
 
         rows[classification_name][orientation_name][file_alias][index+1] = rows[classification_name][orientation_name][file_alias][index] + len(data[classification_name][orientation_name][file_alias][index])
@@ -183,20 +191,20 @@ def _load(count_result_set, locate_result_set):
     output = collections.defaultdict(lambda: collections.defaultdict(dict))
 
     # Allocates and populates the output dictionary.
-    for (classification_name, orientation_name, file_name, file_alias, data_type, _) in count_result_set:
+    for (classification_name, orientation_name, file_extension, file_alias, data_type, _) in count_result_set:
         if orientation_name == '':
-            if '.scio' in file_name:
+            if file_extension == 'scio':
                 output[classification_name][file_alias] = np.empty((rows[classification_name][orientation_name][file_alias][-1], data[classification_name][orientation_name][file_alias][-1].shape[1]), data_type)
-            if '.raw' in file_name:
+            if file_extension == 'raw':
                 output[classification_name][file_alias] = np.empty((rows[classification_name][orientation_name][file_alias][-1],), data_type)
 
             for file_data, file_rows in zip(data[classification_name][orientation_name][file_alias], rows[classification_name][orientation_name][file_alias]):
                 output[classification_name][file_alias][file_rows:file_rows+len(file_data)] = file_data
 
         else: 
-            if '.scio' in file_name:
+            if file_extension == 'scio':
                 output[classification_name][orientation_name][file_alias] = np.empty((rows[classification_name][orientation_name][file_alias][-1], data[classification_name][orientation_name][file_alias][-1].shape[1]), data_type)
-            if '.raw' in file_name:
+            if file_extension == 'raw':
                 output[classification_name][orientation_name][file_alias] = np.empty((rows[classification_name][orientation_name][file_alias][-1],), data_type)
 
             for file_data, file_rows in zip(data[classification_name][orientation_name][file_alias], rows[classification_name][orientation_name][file_alias]):
