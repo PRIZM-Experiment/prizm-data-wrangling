@@ -68,7 +68,7 @@ mdb.execute("SELECT component_model, component_description FROM HardwareComponen
 
 As an example of a more complex query, the directory addresses and file names associated with the east-west polarization data gathered by the 100MHz PRIZM antenna during the first half of 2018 can be retrieved in chronological order as follows.
 ```python
-mdb.execute(("SELECT DataDirectories.directory_address, DataTypes.file_name, "
+mdb.execute(("SELECT DataDirectories.directory_address, DataTypes.file_name "
              "FROM   DataDirectories "
              "JOIN   DataCategories "
              "ON     DataDirectories.data_category = DataCategories.data_category "
