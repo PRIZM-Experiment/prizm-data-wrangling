@@ -70,6 +70,7 @@ def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz'
                  "       END "
                  "       AS file_alias, "
                  "       DataTypes.data_type AS data_type, "
+                 "       DataDirectories.data_directory "
                  "FROM   DataDirectories "
                  "JOIN   DataCategories "
                  "ON     DataDirectories.data_category = DataCategories.data_category "
