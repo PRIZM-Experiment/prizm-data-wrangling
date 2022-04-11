@@ -117,26 +117,26 @@ Alternatively, curated data selections suitable for specific analyses can be loa
 mdb.load(selection='./selections/2018_100MHz_EW.p')
 ```
 
-The data is returned in NumPy arrays organized in a nested dictionary structure. For the data loaded above through the `../selections/2018_100MHz_EW.p` pickle file, the key hierarchy in the resulting data dictionary is the following.
+The data is returned in NumPy arrays organized in a nested dictionary structure. The key hierarchy in the resulting dictionary is shown below for the data loaded by referencing the `../selections/2018_100MHz_EW.p` pickle file.
 ```python
 {
     '100MHz':
     {
         'EW':
         {
-            'time_sys_start': numpy.ndarray
-            'time_sys_stop': numpy.ndarray
-            'pol: numpy.ndarray
+            'time_sys_start': numpy.ndarray,
+            'time_sys_stop': numpy.ndarray,
+            'pol: numpy.ndarray,
         },
     },
 
     'Switch'
     {
-        'antenna': numpy.ndarray
-        'res100': numpy.ndarray
-        'res50': numpy.ndarray
-        'short': numpy.ndarray
-        'noise': numpy.ndarray
+        'antenna': numpy.ndarray,
+        'res100': numpy.ndarray,
+        'res50': numpy.ndarray,
+        'short': numpy.ndarray,
+        'noise': numpy.ndarray,
     },
 }
 ```
