@@ -117,7 +117,7 @@ Alternatively, curated data selections suitable for specific analyses can be loa
 mdb.load(selection='./selections/2018_100MHz_EW.p')
 ```
 
-The data is returned in NumPy arrays organized in a nested dictionary structure. The key hierarchy in the resulting dictionary is shown below for the data loaded by referencing the `../selections/2018_100MHz_EW.p` pickle file.
+The data is returned in NumPy arrays organized in a nested dictionary structure. The key hierarchy in the resulting dictionary is shown below for the data loaded by referencing the `../selections/2018_100MHz_EW.p` pickle file – a similar hierarchy results when data associated with different categories, instruments, or channels are loaded.
 ```python
 {
     '100MHz':
@@ -140,4 +140,4 @@ The data is returned in NumPy arrays organized in a nested dictionary structure.
     },
 }
 ```
-A similar pattern results when data associated with different categories, instruments, or channels are loaded. With the exception of the timestamp information, data tied to both polarization channels are listed directly under a category or instrument key, while data associated with a particular polarization channel are listed under the appropriate channel key.
+In general, the data associated with both polarization channels are listed directly under their respective category or instrument key, as illustrated by the `antenna`, `res100`, `res50`, `short`, and `noise` entries listed under the `Switch` key. In contrast, the data associated with a particular polarization channel are listed under the appropriate channel key, as examplified by the `time_sys_start`, `time_sys_stop`, and `pol` entries under both the `100MHz` and `EW` keys.
