@@ -126,7 +126,7 @@ The data is returned in NumPy arrays organized in a nested dictionary structure.
         {
             'time_sys_start': numpy.ndarray,
             'time_sys_stop': numpy.ndarray,
-            'pol: numpy.ndarray,
+            'pol': numpy.ndarray,
         },
     },
 
