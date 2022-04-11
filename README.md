@@ -117,7 +117,7 @@ Alternatively, curated data selections suitable for specific analyses can be loa
 mdb.load(selection='./selections/2018_100MHz_EW.p')
 ```
 
-The data is returned in NumPy arrays organized in a nested dictionary structure. The key hierarchy in the resulting dictionary is shown below for the data loaded by referencing the `../selections/2018_100MHz_EW.p` pickle file – a similar hierarchy results when data associated with different categories, instruments, or channels are loaded.
+The data is returned in the form of NumPy arrays and organized in a nested dictionary structure. The key hierarchy in the resulting dictionary is shown below for the curated data selection loaded above – a similar hierarchy results when data associated with different categories, instruments, or channels are loaded.
 ```python
 {
     '100MHz':
