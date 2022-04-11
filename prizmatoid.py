@@ -647,7 +647,7 @@ def interpolate_short(prizm_data, antenna='100MHz', polarization='EW', trim = (1
     # For each slice in between antenna slices:
     for i, calibrator_gap_slice in enumerate(calibrators_slices):
         # Find the 3 closest calibrator (Short) slices in time:
-        closest_slices = get_closest_slices_in_time(prizm_data, calibrator_gap_slice, short_slices, ctime_distance_threshold=2000, num_slices=3, antenna=antenna, polarization=polarization):
+        closest_slices = get_closest_slices_in_time(prizm_data, calibrator_gap_slice, short_slices, ctime_distance_threshold=2000, num_slices=3, antenna=antenna, polarization=polarization)
         
         closest_times = np.array([ time_value
                                    for entry in closest_slices
