@@ -33,6 +33,8 @@ import ephem
 from datetime import datetime, timezone, timedelta
 
 import metadatabase as mdb
+from data import load
+
 
 class SpectralData:
     """
@@ -81,6 +83,23 @@ class SpectralData:
 
         self.power_pol0 = None
         self.power_pol1 = None
+
+        return
+
+    def load_mdb(self, categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz', '70MHz'],
+                  channels=['EW', 'NS'], intervals=[(1524400000.0,1524500000.0),], quality=[1, 0, 'NULL'],
+                  integrity=[1, 0, 'NULL'], completeness=[1, 0, 'NULL'], selection=None):
+
+        self.antenna =  instruments
+        self.ctime_intervals = intervals
+        self.data_dictionary = mdb.load(categories, instruments, channels, intervals, quality, integrity, completeness,
+                                        selection)
+        self.polarizations = channels
+        return
+
+    def load_path(self, directory_addresses=['~'], classification_catalog={}, file_catalog={}):
+
+
 
         return
 
