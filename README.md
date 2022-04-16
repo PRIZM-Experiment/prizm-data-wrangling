@@ -68,7 +68,7 @@ mdb.execute("SELECT component_model, component_description FROM HardwareComponen
 
 As an example of a more complex query, the directory addresses and file names associated with the east-west polarization data gathered by the 100MHz PRIZM antenna during the first half of 2018 can be retrieved in chronological order as follows.
 ```python
-mdb.execute(("SELECT DataDirectories.directory_address, DataTypes.file_name, "
+mdb.execute(("SELECT DataDirectories.directory_address, DataTypes.file_name "
              "FROM   DataDirectories "
              "JOIN   DataCategories "
              "ON     DataDirectories.data_category = DataCategories.data_category "
@@ -116,3 +116,28 @@ Alternatively, curated data selections suitable for specific analyses can be loa
 ```python
 mdb.load(selection='./selections/2018_100MHz_EW.p')
 ```
+
+The data is returned in the form of NumPy arrays and organized in a nested dictionary structure. The key hierarchy in the resulting dictionary is shown below for the curated data selection loaded above – a similar hierarchy results when data associated with different categories, instruments, or channels are loaded.
+```python
+{
+    '100MHz':
+    {
+        'EW':
+        {
+            'time_sys_start': numpy.ndarray,
+            'time_sys_stop': numpy.ndarray,
+            'pol': numpy.ndarray,
+        },
+    },
+
+    'Switch'
+    {
+        'antenna': numpy.ndarray,
+        'res100': numpy.ndarray,
+        'res50': numpy.ndarray,
+        'short': numpy.ndarray,
+        'noise': numpy.ndarray,
+    },
+}
+```
+In general, the data associated with both polarization channels are listed directly under their respective category or instrument key, as illustrated by the `antenna`, `res100`, `res50`, `short`, and `noise` entries listed under the `Switch` key. In contrast, the data associated with a particular polarization channel are listed under the appropriate channel key, as examplified by the `time_sys_start`, `time_sys_stop`, and `pol` entries under both the `100MHz` and `EW` keys.
