@@ -220,7 +220,7 @@ def load(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz',
         count_result_set = count(categories, instruments, channels, intervals, quality, integrity, completeness)
         locate_result_set = locate(categories, instruments, channels, intervals, quality, integrity, completeness)
     else:
-        # Loads and unpacks the input data selection.
+        # Loads the needed result sets from the input pickle file.
         count_result_set, locate_result_set = pickle.load(open(selection, 'rb'))
 
     return _load(count_result_set, locate_result_set, _directories['data'])
