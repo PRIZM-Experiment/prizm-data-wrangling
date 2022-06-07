@@ -1,11 +1,12 @@
-import glob 
+import glob
+import operator
 import itertools
 import collections
 import numpy as np
 from metadatabase import _load
 
 
-def add_switch_flags(data, instruments=['100MHz', '70MHz'], channels=['EW', 'NS']):
+def add_switch_flags(data, instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], buffer=(0, 0)):
     """ Produces flags separating the data according to its associated switch states. """
 
     for channel, instrument in itertools.product(*[channels, instruments]):
@@ -19,28 +20,81 @@ def add_switch_flags(data, instruments=['100MHz', '70MHz'], channels=['EW', 'NS'
             switch_data = np.array([list(group)[-1] if state == 1 else list(group)[0] for state, group in itertools.groupby(switch_data, lambda entry: entry[0])])
             if switch_data[-1,0] == 1: switch_data = switch_data[:-1,:]
 
-            # Initializes an empty flags object. 
-            flags = np.zeros_like(data[instrument][channel]['time_sys_start'], dtype='bool')
+            # Initializes an empty flags object.
+            flags = list()
 
             # Produces the Switch flags.
             for _, start, _, stop in np.reshape(switch_data, (-1,4)):
-                lower_bound = data[instrument][channel]['time_sys_start'] >= start
-                upper_bound = data[instrument][channel]['time_sys_stop'] <= stop
-                flags[lower_bound*upper_bound] = True
+                beginning = np.searchsorted(data[instrument][channel]['time_sys_start'], start) + buffer[0]
+                end = np.searchsorted(data[instrument][channel]['time_sys_stop'], stop, side='right') - buffer[1]
+                if beginning < end: flags.append(slice(beginning, end, None))
 
             data[instrument][channel]['Flags'][file_alias] = flags
 
     return
+
+def get(data, entry='pol', instrument='100MHz', channel='EW', kind='antenna'):
+    """ Extracts the spectra of a given kind from the input data. """
+
+    return np.r_[operator.itemgetter(*data[instrument][channel]['Flags'][kind])(data[instrument][channel][entry])]
+
+def interpolate(data, times, kind='short', instrument='100MHz', channel='EW', threshold=500):
+    """ Employs linear interpolation to obtain the spectra of a given kind for each input time. """
+
+    # The data to be interpolated: y = interpolant_(x)
+    x = data[instrument][channel]['time_sys_start']
+    y = data[instrument][channel]['pol']
+    interpolation_data = list()
+
+    # Collects the appropriate flags located in the vicinity of each input time value.
+    flags = data[instrument][channel]['Flags'][kind]
+    slices = [slice(index, index + 1, None) for index in np.searchsorted(x, times)]
+    flags = [(flags[index - 2], flags[index - 1], flags[index], flags[index + 1]) for index in np.searchsorted(flags, slices)]
+
+    # Selects pairs of flags to be used in the interpolation.
+    for flag, time in zip(flags, times):
+        # Identifies which flags in the vicinity of the current time satisfy the input threshold.
+        pattern = list(map(np.mean, operator.itemgetter(*flag)(x)))
+        pattern.insert(2, time)
+        pattern = np.abs(np.diff(pattern)) < threshold
+
+        # Picks the appropriate pair of flags based on the pattern identified above.
+        if np.all(pattern[1:3] == [True,True]): selection = (flag[1],flag[2])
+        elif np.all(pattern[0:2] == [True,True]): selection = (flag[0],flag[1])
+        elif np.all(pattern[2:4] == [True,True]): selection = (flag[2],flag[3])
+        elif np.all(pattern[0:3] == [False,True,False]): selection = (flag[1],flag[1])
+        elif np.all(pattern[1:4] == [False,True,False]): selection = (flag[2],flag[2])
+        else:
+            # None of the flags clear the input threshold.
+            interpolation_data.append((np.NaN, np.empty(y.shape[1]), np.NaN, np.empty(y.shape[1]), time))
+            continue
+
+        # Appends a new pair of points to be interpolated.
+        interpolation_data.append((x[selection[0]].mean(), y[selection[0]].mean(axis=0), x[selection[1]].mean(), y[selection[1]].mean(axis=0), time))
+
+    return np.array(list(map(_interpolant, interpolation_data)))
+
+def _interpolant(interpolation_data):
+    """ Linear inerpolant used to extrapolate spectra of a given kind over time. """
+ 
+    # Unpacks the input interpolation data.
+    x0, y0, x1, y1, x = interpolation_data
+
+    # Returns the linearly interpolated spectra.
+    if x0 == x1:
+        return y0
+    else:
+        return y0*(x1 - x)/(x1 - x0) + y1*(x - x0)/(x1 - x0)
 
 def load(directory_addresses=['~'], classification_catalog={}, file_catalog={}):
     """ Loads the catalogued files located under the input directory addresses, organizing them according to the catalogued categories. """
 
     classification_catalog = {
             **{
-                'switch':'Switch',
+                'switch': 'Switch',
                 'data_70MHz': '70MHz', 
                 'data_100MHz': '100MHz',
-                'temperature':'Temperature',
+                'temperature': 'Temperature',
                 },
             **classification_catalog
             }
