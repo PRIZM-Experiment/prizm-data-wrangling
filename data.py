@@ -34,14 +34,14 @@ def add_switch_flags(data, instruments=['100MHz', '70MHz'], channels=['EW', 'NS'
     return
 
 def get(data, entry='pol', instrument='100MHz', channel='EW', kind='antenna'):
-    """ Extracts the spectra of a given kind from the input data. """
+    """ Extracts the entry of a given kind from the input data. """
 
     return np.r_[operator.itemgetter(*data[instrument][channel]['Flags'][kind])(data[instrument][channel][entry])]
 
 def interpolate(data, times, kind='short', instrument='100MHz', channel='EW', threshold=500):
     """ Employs linear interpolation to obtain the spectra of a given kind for each input time. """
 
-    # The data to be interpolated: y = interpolant_(x)
+    # The data to be interpolated: y = _interpolant(x)
     x = data[instrument][channel]['time_sys_start']
     y = data[instrument][channel]['pol']
     interpolation_data = list()
@@ -80,7 +80,7 @@ def _interpolant(interpolation_data):
     # Unpacks the input interpolation data.
     x0, y0, x1, y1, x = interpolation_data
 
-    # Returns the linearly interpolated spectra.
+    # Returns the linearly interpolated spectrum.
     if x0 == x1:
         return y0
     else:
