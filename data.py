@@ -49,7 +49,7 @@ def interpolate(data, times, kind='short', instrument='100MHz', channel='EW', th
     # Collects the appropriate flags located in the vicinity of each input time value.
     flags = data[instrument][channel]['Flags'][kind]
     slices = [slice(index, index + 1, None) for index in np.searchsorted(x, times)]
-    flags = [(flags[index - 2], flags[index - 1], flags[index], flags[index + 1]) for index in np.searchsorted(flags, slices)]
+    flags = [(flags[index - 2], flags[index - 1], flags[index], flags[(index + 1) % len(flags)]) for index in np.searchsorted(flags, slices)]
 
     # Selects pairs of flags to be used in the interpolation.
     for flag, time in zip(flags, times):
