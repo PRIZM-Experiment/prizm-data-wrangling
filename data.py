@@ -44,7 +44,9 @@ def interpolate(data, times, kind='short', instrument='100MHz', channel='EW', th
     # The data to be interpolated: y = _interpolant(x)
     x = data[instrument][channel]['time_sys_start']
     y = data[instrument][channel]['pol']
-    interpolation_data = list()
+
+    # Allocates the interpolation result.
+    interpolation = np.empty((times.size, y.shape[1]))
 
     # Collects the appropriate flags located in the vicinity of each input time value.
     flags = data[instrument][channel]['Flags'][kind]
@@ -52,7 +54,7 @@ def interpolate(data, times, kind='short', instrument='100MHz', channel='EW', th
     flags = [(flags[index - 2], flags[index - 1], flags[index], flags[(index + 1) % len(flags)]) for index in np.searchsorted(flags, slices)]
 
     # Selects pairs of flags to be used in the interpolation.
-    for flag, time in zip(flags, times):
+    for index, (flag, time) in enumerate(zip(flags, times)):
         # Identifies which flags in the vicinity of the current time satisfy the input threshold.
         pattern = list(map(np.mean, operator.itemgetter(*flag)(x)))
         pattern.insert(2, time)
@@ -66,16 +68,16 @@ def interpolate(data, times, kind='short', instrument='100MHz', channel='EW', th
         elif np.all(pattern[1:4] == [False,True,False]): selection = (flag[2],flag[2])
         else:
             # None of the flags clear the input threshold.
-            interpolation_data.append((np.NaN, np.empty(y.shape[1]), np.NaN, np.empty(y.shape[1]), time))
+            interpolation[index,:].fill(np.nan)
             continue
 
-        # Appends a new pair of points to be interpolated.
-        interpolation_data.append((x[selection[0]].mean(), y[selection[0]].mean(axis=0), x[selection[1]].mean(), y[selection[1]].mean(axis=0), time))
+        # Interpolates.
+        interpolation[index,:] = _interpolant((x[selection[0]].mean(), y[selection[0]].mean(axis=0), x[selection[1]].mean(), y[selection[1]].mean(axis=0), time))
 
-    return np.array(list(map(_interpolant, interpolation_data)))
+    return interpolation
 
 def _interpolant(interpolation_data):
-    """ Linear inerpolant used to extrapolate spectra of a given kind over time. """
+    """ Linear interpolant used to extrapolate spectra of a given kind over time. """
  
     # Unpacks the input interpolation data.
     x0, y0, x1, y1, x = interpolation_data
