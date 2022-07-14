@@ -3,8 +3,19 @@ import operator
 import itertools
 import collections
 import numpy as np
+from astropy.time import Time
 from metadatabase import _load
 
+
+def add_lst_time(data, instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], location=('37.819638d', '-46.88694d')):
+    """ Produces local sidereal time entries for each input instrument and channel. """
+
+    for channel, instrument in itertools.product(*[channels, instruments]):
+        # Converts UNIX time to local sidereal time.
+        data[instrument][channel]['lst_start'] = Time(data[intrument][channel]['time_sys_start'], format='unix', scale='utc', location=location).sidereal_time('apparent').value
+        data[instrument][channel]['lst_stop'] = Time(data[intrument][channel]['time_sys_stop'], format='unix', scale='utc', location=location).sidereal_time('apparent').value
+
+    return
 
 def add_switch_flags(data, instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], buffer=(0, 0)):
     """ Produces flags separating the data according to its associated switch states. """
@@ -78,7 +89,7 @@ def interpolate(data, times, kind='short', instrument='100MHz', channel='EW', th
 
 def _interpolant(interpolation_data):
     """ Linear interpolant used to extrapolate spectra of a given kind over time. """
- 
+
     # Unpacks the input interpolation data.
     x0, y0, x1, y1, x = interpolation_data
 
