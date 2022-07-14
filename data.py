@@ -99,37 +99,8 @@ def _interpolant(interpolation_data):
     else:
         return y0*(x1 - x)/(x1 - x0) + y1*(x - x0)/(x1 - x0)
 
-def load(directory_addresses=['~'], classification_catalog={}, file_catalog={}):
+def load(directory_addresses=['~'], classification_catalog={'switch': 'Switch', 'data_70MHz': '70MHz', 'data_100MHz': '100MHz', 'temperatures': 'Temperatures'}, file_catalog={'pol0.scio': ('float','EW','pol'), 'pol1.scio': ('float','NS','pol'), 'pol0.scio.bz2': ('float','EW','pol'), 'pol1.scio.bz2': ('float','NS','pol'), 'time_sys_stop.raw': ('float','EW','time_sys_stop'), 'time_sys_stop.raw': ('float','NS','time_sys_stop'), 'time_sys_start.raw': ('float','EW','time_sys_start'), 'time_sys_start.raw': ('float','NS','time_sys_start'), 'open.scio': ('float','','open'), 'short.scio': ('float','','short'), 'res50.scio': ('float','','res50'), 'res100.scio': ('float','','res100'), 'antenna.scio': ('float','','antenna')}):
     """ Loads the catalogued files located under the input directory addresses, organizing them according to the catalogued categories. """
-
-    classification_catalog = {
-            **{
-                'switch': 'Switch',
-                'data_70MHz': '70MHz', 
-                'data_100MHz': '100MHz',
-                'temperature': 'Temperature',
-                },
-            **classification_catalog
-            }
-
-    file_catalog = {
-            **{
-                'pol0.scio': ('float','EW','pol'),
-                'pol1.scio': ('float','NS','pol'),
-                'pol0.scio.bz2': ('float','EW','pol'),
-                'pol1.scio.bz2': ('float','NS','pol'),
-                'time_sys_stop.raw': ('float','EW','time_sys_stop'),
-                'time_sys_stop.raw': ('float','NS','time_sys_stop'),
-                'time_sys_start.raw': ('float','EW','time_sys_start'),
-                'time_sys_start.raw': ('float','NS','time_sys_start'),
-                'open.scio': ('float','','open'),
-                'short.scio': ('float','','short'),
-                'res50.scio': ('float','','res50'),
-                'res100.scio': ('float','','res100'),
-                'antenna.scio': ('float','','antenna'),
-                },
-            **file_catalog
-            }
 
     # Initializes the result sets.
     count_result_set = []
