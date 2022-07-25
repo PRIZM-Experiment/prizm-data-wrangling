@@ -48,24 +48,28 @@ def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz'
 
     # Builds the query from all possible combinations of the input arguments.
     for combination, (category, instrument, channel, (start, stop), quality, integrity, completeness) in enumerate(itertools.product(*[categories, instruments, channels, intervals, quality, integrity, completeness])):
-        query = ("SELECT CASE " 
-                 "            WHEN DataCategories.category_name = 'Antenna' THEN ArrayElements.element_name "
-                 "            ELSE DataCategories.category_name "
-                 "       END "
-                 "       AS classification_name, "
+        query = ("SELECT ArrayElements.element_name AS classification_name, "
                  "       CASE "
                  "            WHEN DataTypes.file_name LIKE '%.scio%' THEN 'scio' "
                  "            WHEN DataTypes.file_name LIKE '%.raw%' THEN 'raw' "
                  "       END "
                  "       AS file_extension, "
                  "       CASE "
-                 "            WHEN DataTypes.file_alias LIKE 'time_sys_%' THEN ChannelOrientations.orientation_name "
+                 "            WHEN DataTypes.file_alias LIKE 'time\_sys\_%' ESCAPE '\\' THEN ChannelOrientations.orientation_name "
                  "            WHEN DataTypes.file_alias LIKE 'pol%' THEN ChannelOrientations.orientation_name "
-                 "            ELSE '' "
+                 "            WHEN DataTypes.file_alias LIKE 'temp\_70[ABNE]%' ESCAPE '\\' THEN ChannelOrientations.orientation_name "
+                 "            WHEN DataTypes.file_alias LIKE 'temp\_100[ABNE]%' ESCAPE '\\' THEN ChannelOrientations.orientation_name "
+                 "            WHEN DataTypes.file_alias LIKE 'time\_%\_sys\_therms' ESCAPE '\\' THEN ChannelOrientations.orientation_name "
+                 "            WHEN DataCategories.category_name = 'Switch' THEN DataCategories.category_name "
+                 "            ELSE 'Housekeeping' "
                  "       END "
-                 "       AS orientation_name, "
+                 "       AS subclassification_name, "
                  "       CASE "
                  "            WHEN DataTypes.file_alias LIKE 'pol%' THEN 'pol' "
+                 "            WHEN DataTypes.file_alias LIKE 'temp\_100[AB]%' ESCAPE '\\' THEN SUBSTR(DataTypes.file_alias, 1, 8) || SUBSTR(DataTypes.file_alias, 10, LENGTH(DataTypes.file_alias)) "
+                 "            WHEN DataTypes.file_alias LIKE 'temp\_100[NE]%' ESCAPE '\\' THEN SUBSTR(DataTypes.file_alias, 1, 8) || SUBSTR(DataTypes.file_alias, 11, LENGTH(DataTypes.file_alias)) "
+                 "            WHEN DataTypes.file_alias LIKE 'temp\_70[AB]%' ESCAPE '\\' THEN SUBSTR(DataTypes.file_alias, 1, 7) || SUBSTR(DataTypes.file_alias, 9, LENGTH(DataTypes.file_alias)) "
+                 "            WHEN DataTypes.file_alias LIKE 'temp\_70[NE]%' ESCAPE '\\' THEN SUBSTR(DataTypes.file_alias, 1, 7) || SUBSTR(DataTypes.file_alias, 10, LENGTH(DataTypes.file_alias)) "
                  "            ELSE DataTypes.file_alias "
                  "       END "
                  "       AS file_alias, "
@@ -93,7 +97,7 @@ def count(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz'
                  "ON     ArrayElements.array_element = ChannelGroups.array_element "
                 f"AND    ArrayElements.element_name = '{instrument}' ") + "UNION "*bool(combination) + query
 
-    query = "SELECT classification_name, orientation_name, file_extension, file_alias, data_type, COUNT(file_alias) FROM (" + query + ") GROUP BY classification_name, orientation_name, file_alias"
+    query = "SELECT classification_name, subclassification_name, file_extension, file_alias, data_type, COUNT(file_alias) FROM (" + query + ") GROUP BY classification_name, subclassification_name, file_alias"
 
     # Queries the MDB.
     result_set = execute(query)
@@ -108,11 +112,7 @@ def locate(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz
 
     # Builds the query from all possible combinations of the input arguments.
     for combination, (category, instrument, channel, (start, stop), quality, integrity, completeness) in enumerate(itertools.product(*[categories, instruments, channels, intervals, quality, integrity, completeness])):
-        query = ("SELECT CASE " 
-                 "            WHEN DataCategories.category_name = 'Antenna' THEN ArrayElements.element_name "
-                 "            ELSE DataCategories.category_name "
-                 "       END "
-                 "       AS classification_name, "
+        query = ("SELECT ArrayElements.element_name AS classification_name, "
                  "       DataDirectories.directory_address || '/' || DataTypes.file_name AS file_path, "
                  "       DataDirectories.time_start AS time_start, "
                  "       CASE "
@@ -121,13 +121,21 @@ def locate(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz
                  "       END "
                  "       AS file_extension, "
                  "       CASE "
-                 "            WHEN DataTypes.file_alias LIKE 'time_sys_%' THEN ChannelOrientations.orientation_name "
+                 "            WHEN DataTypes.file_alias LIKE 'time\_sys\_%' ESCAPE '\\' THEN ChannelOrientations.orientation_name "
                  "            WHEN DataTypes.file_alias LIKE 'pol%' THEN ChannelOrientations.orientation_name "
-                 "            ELSE '' "
+                 "            WHEN DataTypes.file_alias LIKE 'temp\_70[ABNE]%' ESCAPE '\\' THEN ChannelOrientations.orientation_name "
+                 "            WHEN DataTypes.file_alias LIKE 'temp\_100[ABNE]%' ESCAPE '\\' THEN ChannelOrientations.orientation_name "
+                 "            WHEN DataTypes.file_alias LIKE 'time\_%\_sys\_therms' ESCAPE '\\' THEN ChannelOrientations.orientation_name "
+                 "            WHEN DataCategories.category_name = 'Switch' THEN DataCategories.category_name "
+                 "            ELSE 'Housekeeping' "
                  "       END "
-                 "       AS orientation_name, "
+                 "       AS subclassification_name, "
                  "       CASE "
                  "            WHEN DataTypes.file_alias LIKE 'pol%' THEN 'pol' "
+                 "            WHEN DataTypes.file_alias LIKE 'temp\_100[AB]%' ESCAPE '\\' THEN SUBSTR(DataTypes.file_alias, 1, 8) || SUBSTR(DataTypes.file_alias, 10, LENGTH(DataTypes.file_alias)) "
+                 "            WHEN DataTypes.file_alias LIKE 'temp\_100[NE]%' ESCAPE '\\' THEN SUBSTR(DataTypes.file_alias, 1, 8) || SUBSTR(DataTypes.file_alias, 11, LENGTH(DataTypes.file_alias)) "
+                 "            WHEN DataTypes.file_alias LIKE 'temp\_70[AB]%' ESCAPE '\\' THEN SUBSTR(DataTypes.file_alias, 1, 7) || SUBSTR(DataTypes.file_alias, 9, LENGTH(DataTypes.file_alias)) "
+                 "            WHEN DataTypes.file_alias LIKE 'temp\_70[NE]%' ESCAPE '\\' THEN SUBSTR(DataTypes.file_alias, 1, 7) || SUBSTR(DataTypes.file_alias, 10, LENGTH(DataTypes.file_alias)) "
                  "            ELSE DataTypes.file_alias "
                  "       END "
                  "       AS file_alias, "
@@ -154,7 +162,7 @@ def locate(categories=['Antenna', 'Switch', 'Temperature'], instruments=['100MHz
                  "ON     ArrayElements.array_element = ChannelGroups.array_element "
                 f"AND    ArrayElements.element_name = '{instrument}' ") + "UNION "*bool(combination) + query
 
-    query = "SELECT classification_name, orientation_name, file_path, file_extension, file_alias, data_type FROM (" + query + ") ORDER BY classification_name, orientation_name, time_start"
+    query = "SELECT classification_name, subclassification_name, file_path, file_extension, file_alias, data_type FROM (" + query + ") ORDER BY classification_name, subclassification_name, time_start"
 
     # Queries the MDB.
     result_set = execute(query)
@@ -170,45 +178,45 @@ def _load(count_result_set, locate_result_set, parent_directory):
     counter = collections.defaultdict(lambda: collections.defaultdict(dict))
 
     # Allocates the auxiliary data-loading dictionaries.
-    for (classification_name, orientation_name, _, file_alias, _, file_count) in count_result_set:
-        data[classification_name][orientation_name][file_alias] = [None]*file_count
-        rows[classification_name][orientation_name][file_alias] = [0] + [None]*file_count
-        counter[classification_name][orientation_name][file_alias] = 0
+    for (classification_name, subclassification_name, _, file_alias, _, file_count) in count_result_set:
+        data[classification_name][subclassification_name][file_alias] = [None]*file_count
+        rows[classification_name][subclassification_name][file_alias] = [0] + [None]*file_count
+        counter[classification_name][subclassification_name][file_alias] = 0
 
     # Loads each file matching the input arguments.
-    for (classification_name, orientation_name, file_path, file_extension, file_alias, data_type) in locate_result_set:
-        index = counter[classification_name][orientation_name][file_alias]
+    for (classification_name, subclassification_name, file_path, file_extension, file_alias, data_type) in locate_result_set:
+        index = counter[classification_name][subclassification_name][file_alias]
 
         if file_extension == 'scio':
-            data[classification_name][orientation_name][file_alias][index] = scio.read(parent_directory + file_path)
+            data[classification_name][subclassification_name][file_alias][index] = scio.read(parent_directory + file_path)
         if file_extension == 'raw':
-            data[classification_name][orientation_name][file_alias][index] = np.fromfile(parent_directory + file_path, data_type)
+            data[classification_name][subclassification_name][file_alias][index] = np.fromfile(parent_directory + file_path, data_type)
 
-        rows[classification_name][orientation_name][file_alias][index+1] = rows[classification_name][orientation_name][file_alias][index] + len(data[classification_name][orientation_name][file_alias][index])
-        counter[classification_name][orientation_name][file_alias] += 1
+        rows[classification_name][subclassification_name][file_alias][index+1] = rows[classification_name][subclassification_name][file_alias][index] + len(data[classification_name][subclassification_name][file_alias][index])
+        counter[classification_name][subclassification_name][file_alias] += 1
 
     # Initializes the output dictionary.
     output = collections.defaultdict(lambda: collections.defaultdict(dict))
 
     # Allocates and populates the output dictionary.
-    for (classification_name, orientation_name, file_extension, file_alias, data_type, _) in count_result_set:
-        if orientation_name == '':
+    for (classification_name, subclassification_name, file_extension, file_alias, data_type, _) in count_result_set:
+        if subclassification_name == '':
             if file_extension == 'scio':
-                output[classification_name][file_alias] = np.empty((rows[classification_name][orientation_name][file_alias][-1], data[classification_name][orientation_name][file_alias][-1].shape[1]), data_type)
+                output[classification_name][file_alias] = np.empty((rows[classification_name][subclassification_name][file_alias][-1], data[classification_name][subclassification_name][file_alias][-1].shape[1]), data_type)
             if file_extension == 'raw':
-                output[classification_name][file_alias] = np.empty((rows[classification_name][orientation_name][file_alias][-1],), data_type)
+                output[classification_name][file_alias] = np.empty((rows[classification_name][subclassification_name][file_alias][-1],), data_type)
 
-            for file_data, file_rows in zip(data[classification_name][orientation_name][file_alias], rows[classification_name][orientation_name][file_alias]):
+            for file_data, file_rows in zip(data[classification_name][subclassification_name][file_alias], rows[classification_name][subclassification_name][file_alias]):
                 output[classification_name][file_alias][file_rows:file_rows+len(file_data)] = file_data
 
         else: 
             if file_extension == 'scio':
-                output[classification_name][orientation_name][file_alias] = np.empty((rows[classification_name][orientation_name][file_alias][-1], data[classification_name][orientation_name][file_alias][-1].shape[1]), data_type)
+                output[classification_name][subclassification_name][file_alias] = np.empty((rows[classification_name][subclassification_name][file_alias][-1], data[classification_name][subclassification_name][file_alias][-1].shape[1]), data_type)
             if file_extension == 'raw':
-                output[classification_name][orientation_name][file_alias] = np.empty((rows[classification_name][orientation_name][file_alias][-1],), data_type)
+                output[classification_name][subclassification_name][file_alias] = np.empty((rows[classification_name][subclassification_name][file_alias][-1],), data_type)
 
-            for file_data, file_rows in zip(data[classification_name][orientation_name][file_alias], rows[classification_name][orientation_name][file_alias]):
-                output[classification_name][orientation_name][file_alias][file_rows:file_rows+len(file_data)] = file_data
+            for file_data, file_rows in zip(data[classification_name][subclassification_name][file_alias], rows[classification_name][subclassification_name][file_alias]):
+                output[classification_name][subclassification_name][file_alias][file_rows:file_rows+len(file_data)] = file_data
 
     return output
 
