@@ -128,16 +128,15 @@ The data is returned in the form of NumPy arrays and organized in a nested dicti
             'time_sys_stop': numpy.ndarray,
             'pol': numpy.ndarray,
         },
-    },
 
-    'Switch'
-    {
-        'antenna': numpy.ndarray,
-        'res100': numpy.ndarray,
-        'res50': numpy.ndarray,
-        'short': numpy.ndarray,
-        'noise': numpy.ndarray,
-    },
+        'Switch':
+        {
+            'antenna': numpy.ndarray,
+            'res100': numpy.ndarray,
+            'res50': numpy.ndarray,
+            'short': numpy.ndarray,
+            'noise': numpy.ndarray,
+        },
 }
 ```
-In general, the data associated with both polarization channels are listed directly under their respective category or instrument key, as illustrated by the `antenna`, `res100`, `res50`, `short`, and `noise` entries listed under the `Switch` key. In contrast, the data associated with a particular polarization channel are listed under the appropriate channel key, as examplified by the `time_sys_start`, `time_sys_stop`, and `pol` entries under both the `100MHz` and `EW` keys.
+The data associated with a particular polarization channel are listed under the appropriate channel key, as examplified by the `time_sys_start`, `time_sys_stop`, and `pol` entries under both the `EW` key. Meanwhile, the data describing the instrument's switching cadence are listed under the `Switch` key, as illustrated above by the `antenna`, `res100`, `res50`, `short`, and `noise` entries. The data related to both polarization channels, on the other hand, are listed under the `Housekeeping` key.
