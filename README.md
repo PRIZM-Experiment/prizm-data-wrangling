@@ -1,6 +1,6 @@
-# PRIZM Metadatabase
+# Data Wrangling for PRIZM 
 
-The PRIZM metadatabase leverages SQLite and Python's `sqlite3` module to keep track of the experiment's data and deployment configurations. It provides scalability, ensures data consistency, and facilitates calibration and analysis by allowing complex data intersections to be retrieved in a straightforward fashion.
+This repository hosts both the PRIZM metadatabase and data container. The PRIZM metadatabase leverages SQLite and Python's `sqlite3` module to keep track of the experiment's data and deployment configurations. It provides scalability, ensures data consistency, and facilitates calibration and analysis by allowing complex data intersections to be retrieved in a straightforward fashion. The PRIZM data container combines the `collections.UserDict` and `numpy.array` objects into an intuitive hierarchical data structure which also enjoys the benefits of vectorization. It can hold data loaded via the metadatabase or directly loaded from a list of directories, and comes equipped with several convenience methods for data manipulation, analysis, and visualization.
 
 ## Dependencies
 
@@ -35,7 +35,7 @@ Finally, to conclude the installation, ensure your `PYTHONPATH` environment vari
 
 ## Documentation
 
-### Schema
+### Metadatabase Schema
 
 Below the Data, Hardware, and Index tables which make up the PRIZM metadatabase are listed. Select a table to learn more about its structure and relationship to other tables in the schema. For an interactive diagram, click [here](https://dbdiagram.io/d/6221828954f9ad109a58a8b9).
 
@@ -43,11 +43,61 @@ Below the Data, Hardware, and Index tables which make up the PRIZM metadatabase 
 | ---- | -------- | ----- |
 | [Data Diretories](guide/data_directories.md)<br/> [Data Categories](guide/data_categories.md)<br/> [Data Types](guide/data_types.md)<br/> [Data Files](guide/data_files.md)<br/> [Data Notes](guide/data_notes.md)<br/><br/><br/><br/><br/><br/><br/><br/><br/> | [Hardware Configurations](guide/hardware_configurations.md)<br/> [Array Elements](guide/array_elements.md)<br/> [Hardware Components](guide/hardware_components.md)<br/> [Component Groups](guide/component_groups.md)<br/> [Component Groupings](guide/component_groupings.md)<br/> [First Stages](guide/first_stages.md)<br/> [Second Stages](guide/second_stages.md)<br/> [First Stage Groups](guide/first_stage_groups.md)<br/> [Second Stage Groups](guide/second_stage_groups.md)<br/> [Channel Orientations](guide/channel_orientations.md)<br/> [Hardware Channels](guide/hardware_channels.md)<br/> [Channel Groups](guide/channel_groups.md)<br/> [Hardware Notes](guide/hardware_notes.md) | [Component Group Index](guide/component_group_index.md)<br/> [Component Grouping Index](guide/component_grouping_index.md)<br/> [First Stage Group Index](guide/first_stage_group_index.md)<br/> [Second Stage Group Index](guide/second_stage_group_index.md)<br/> [Channel Group Index](guide/channel_group_index.md)<br/><br/><br/><br/><br/><br/><br/><br/><br/> |
 
+### Container Structure
+
+The structure of the PRIZM data container is schematized below. While the container is organized in a nested dictionary structure, each data entry is stored as a `numpy.ndarray`.
+```python
+{
+    '70MHz':
+    {
+        'EW':
+        {
+            'pol': numpy.ndarray,
+            'time_sys_start': numpy.ndarray,
+            ...
+        },
+
+        'NS':
+        {
+            'pol': numpy.ndarray,
+            'time_sys_start': numpy.ndarray,
+            ...
+        },
+
+        'Switch':
+        {
+            'antenna': numpy.ndarray,
+            'short': numpy.ndarray,
+            ...
+        },
+
+        'Housekeeping':
+        {
+            'cross_real': numpy.ndarray,
+            'temp_100_ambient': numpy.ndarray,
+            ...
+        }
+
+    '100MHz':
+    {
+        ...
+    }
+}
+```
+The container's primary keys, `70MHz` and `100MHz`, refer to the two PRIZM instruments. The data associated with a particular polarization channel are listed under the appropriate channel key, as examplified by the `pol` and `time_sys_start` entries under both the `EW` and `NS` keys. Meanwhile, the data describing the instrument's switching cadence are listed under the `Switch` key, as illustrated above by the `antenna` and `short` entries. Finally, the data related to both polarization channels are listed under the `Housekeeping` key, as shown by the `cross_real` and `temp_100_ambient` entries.
+
+Below is a list of the container's convenience methods. Select a method to learn more details about its functioning and usage.
+
+| Functions |
+| ----------|
+| [lst](guide/container/lst.md)<br/> [partition](guide/container/partition.md)<br/> [get](guide/container/get.md)<br/> [interpolate](guide/container/interpolate.md)|
+
 ### Usage
 
-The usage examples covered below assume the PRIZM metadatabase module has been imported under the following alias. 
+The usage examples covered below assume the PRIZM metadatabase and data container have been imported as follows. 
 ```python
 import metadatabase as mdb
+from data import Data
 ```
 
 #### Retrieving Metadata
@@ -99,44 +149,61 @@ mdb.execute(("SELECT DataDirectories.directory_address, DataTypes.file_name "
  ('/marion2018/data_100MHz/15302/1530293230', 'time_sys_stop.raw')]
 ```
 
-#### Loading Data
+#### Loading Data via Metadatabase
 
-PRIZM data can be loaded through the metadatabase using the `load` function. This function receives lists as arguments, and returns a dictionary containing the data matching all combinations of these input lists' elements. This is illustrated below, where absolutely all data collected around April 22–23, 2018 is loaded.
+PRIZM data can be loaded through the metadatabase using the data container's `via_metadatabase` constructor. This function receives lists as arguments, and returns a data container holding the data matching all combinations of these input lists' elements. This is illustrated below, where absolutely all data collected around April 22–23, 2018 is loaded.
 ```python
-mdb.load(categories=['Antenna', 'Switch', 'Temperature'],
-         instruments=['100MHz', '70MHz'],
-         channels=['EW', 'NS'],
-         intervals=[(1524400000.0,1524500000.0),],
-         quality=[1, 0, 'NULL'],
-         integrity=[1, 0, 'NULL'],
-         completeness=[1, 0, 'NULL'])
+data = Data.via_metadatabase(categories=['Antenna', 'Switch', 'Temperature'],
+                             instruments=['100MHz', '70MHz'],
+                             channels=['EW', 'NS'],
+                             intervals=[(1524400000.0,1524500000.0),],
+                             quality=[1, 0, 'NULL'],
+                             integrity=[1, 0, 'NULL'],
+                             completeness=[1, 0, 'NULL'])
 ```
 
 Alternatively, curated data selections suitable for specific analyses can be loaded through the metadatabase by referencing certain pickle files, such as those available under this repository's [`../selections`](selections/) subdirectory. As demonstrated below, the pickle file `../selections/2018_100MHz_EW.p` can be referenced to load all the good-quality east-west polarization data gathered by the 100MHz antenna in 2018.
 ```python
-mdb.load(selection='./selections/2018_100MHz_EW.p')
+data = Data.via_metadatabase(selection='./selections/2018_100MHz_EW.p')
 ```
 
-The data is returned in the form of NumPy arrays and organized in a nested dictionary structure. The key hierarchy in the resulting dictionary is shown below for the curated data selection loaded above – a similar hierarchy results when data associated with different categories, instruments, or channels are loaded.
-```python
-{
-    '100MHz':
-    {
-        'EW':
-        {
-            'time_sys_start': numpy.ndarray,
-            'time_sys_stop': numpy.ndarray,
-            'pol': numpy.ndarray,
-        },
+#### Loading Data from Directories
 
-        'Switch':
-        {
-            'antenna': numpy.ndarray,
-            'res100': numpy.ndarray,
-            'res50': numpy.ndarray,
-            'short': numpy.ndarray,
-            'noise': numpy.ndarray,
-        },
+PRIZM data can be loaded directly from a list of directories using the data container's `from_directories` constructor. Because this approach does not make use of the metadatabase, it requires a substantial amount of additional information as inputs in order to make sense of the file and directory structure the data will be read from. User-defined catalogues are used for that purpose. Below an example of such catalogues is shown.
+```python
+classification_catalogue = {
+    'data_70MHz': '70MHz',
+    'data_100MHz': '100MHz',
+}
+
+file_catalogue = {
+    'pol1.scio': ('float','NS','pol'),
+    'pol1.scio.bz2': ('float','NS','pol'),
+    'time_sys_stop.raw': ('float','NS','time_sys_stop'),
+    'time_sys_start.raw': ('float','NS','time_sys_start'),
+    'pol0.scio': ('float','EW','pol'),
+    'pol0.scio.bz2': ('float','EW','pol'),
+    'time_sys_stop.raw': ('float','EW','time_sys_stop'),
+    'time_sys_start.raw': ('float','EW','time_sys_start'),
+    'open.scio': ('float','Switch','open'),
+    'short.scio': ('float','Switch','short'),
+    'res50.scio': ('float','Switch','res50'),
+    'res100.scio': ('float','Switch','res100'),
+    'antenna.scio': ('float','Switch','antenna'),
+    'open.scio.bz2': ('float','Switch','open'),
+    'short.scio.bz2': ('float','Switch','short'),
+    'res50.scio.bz2': ('float','Switch','res50'),
+    'res100.scio.bz2': ('float','Switch','res100'),
+    'antenna.scio.bz2': ('float','Switch','antenna'),
 }
 ```
-The data associated with a particular polarization channel are listed under the appropriate channel key, as examplified by the `time_sys_start`, `time_sys_stop`, and `pol` entries under both the `EW` key. Meanwhile, the data describing the instrument's switching cadence are listed under the `Switch` key, as illustrated above by the `antenna`, `res100`, `res50`, `short`, and `noise` entries. The data related to both polarization channels, on the other hand, are listed under the `Housekeeping` key.
+While the `classification_catalogue` connects parent directory names to the standard instrument names, the `file_catalogue` lists every file of interest along with its respective data type, subclassification, and standard alias. Notice, however, that the above examples are neither definitive nor exhaustive, and would need to be manually edited to accommodate additional data, different file names, and/or different parent directory names.
+
+
+In addition to the above catalogues, this function also receives a list of directory addresses as an argument, and returns a data container holding the data matching all cataloged files found within every subdirectory of the input directory addresses. This is illustrated below, where some of the data collected by the 70MHz instrument around December 10–11, 2021 is loaded.
+```python
+data = Data.from_directories(directory_addresses=['/project/s/sievers/prizm/marion2022/prizm-70/data_70MHz/16391',
+                                                  '/project/s/sievers/prizm/marion2022/prizm-70/data_70MHz/switch/16391'],
+                             clsssification_catalogue=classification_catalogue,
+                             file_catalogue=file_catalogue)
+```
