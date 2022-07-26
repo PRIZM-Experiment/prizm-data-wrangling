@@ -41,11 +41,17 @@ Below the Data, Hardware, and Index tables which make up the PRIZM metadatabase 
 
 | Data | Hardware | Index |
 | ---- | -------- | ----- |
-| [Data Diretories](guide/data_directories.md)<br/> [Data Categories](guide/data_categories.md)<br/> [Data Types](guide/data_types.md)<br/> [Data Files](guide/data_files.md)<br/> [Data Notes](guide/data_notes.md)<br/><br/><br/><br/><br/><br/><br/><br/><br/> | [Hardware Configurations](guide/hardware_configurations.md)<br/> [Array Elements](guide/array_elements.md)<br/> [Hardware Components](guide/hardware_components.md)<br/> [Component Groups](guide/component_groups.md)<br/> [Component Groupings](guide/component_groupings.md)<br/> [First Stages](guide/first_stages.md)<br/> [Second Stages](guide/second_stages.md)<br/> [First Stage Groups](guide/first_stage_groups.md)<br/> [Second Stage Groups](guide/second_stage_groups.md)<br/> [Channel Orientations](guide/channel_orientations.md)<br/> [Hardware Channels](guide/hardware_channels.md)<br/> [Channel Groups](guide/channel_groups.md)<br/> [Hardware Notes](guide/hardware_notes.md) | [Component Group Index](guide/component_group_index.md)<br/> [Component Grouping Index](guide/component_grouping_index.md)<br/> [First Stage Group Index](guide/first_stage_group_index.md)<br/> [Second Stage Group Index](guide/second_stage_group_index.md)<br/> [Channel Group Index](guide/channel_group_index.md)<br/><br/><br/><br/><br/><br/><br/><br/><br/> |
+| [Data Diretories](guide/metadatabase/data_directories.md)<br/> [Data Categories](guide/metadatabase/data_categories.md)<br/> [Data Types](guide/metadatabase/data_types.md)<br/> [Data Files](guide/metadatabase/data_files.md)<br/> [Data Notes](guide/metadatabase/data_notes.md)<br/><br/><br/><br/><br/><br/><br/><br/><br/> | [Hardware Configurations](guide/metadatabase/hardware_configurations.md)<br/> [Array Elements](guide/metadatabase/array_elements.md)<br/> [Hardware Components](guide/metadatabase/hardware_components.md)<br/> [Component Groups](guide/metadatabase/component_groups.md)<br/> [Component Groupings](guide/metadatabase/component_groupings.md)<br/> [First Stages](guide/metadatabase/first_stages.md)<br/> [Second Stages](guide/metadatabase/second_stages.md)<br/> [First Stage Groups](guide/metadatabase/first_stage_groups.md)<br/> [Second Stage Groups](guide/metadatabase/second_stage_groups.md)<br/> [Channel Orientations](guide/metadatabase/channel_orientations.md)<br/> [Hardware Channels](guide/metadatabase/hardware_channels.md)<br/> [Channel Groups](guide/metadatabase/channel_groups.md)<br/> [Hardware Notes](guide/metadatabase/hardware_notes.md) | [Component Group Index](guide/metadatabase/component_group_index.md)<br/> [Component Grouping Index](guide/metadatabase/component_grouping_index.md)<br/> [First Stage Group Index](guide/metadatabase/first_stage_group_index.md)<br/> [Second Stage Group Index](guide/metadatabase/second_stage_group_index.md)<br/> [Channel Group Index](guide/metadatabase/channel_group_index.md)<br/><br/><br/><br/><br/><br/><br/><br/><br/> |
 
-### Container Structure
+### Container Design
 
-The structure of the PRIZM data container is schematized below. While the container is organized in a nested dictionary structure, each data entry is stored as a `numpy.ndarray`.
+Below is a list of the container's convenience methods. Select a method to learn more details about its functioning and usage.
+
+| Constructors | Methods |
+| ------------ | --------|
+| [via_metadatabase](guide/container/via_metadatabase.md)<br/> [from_directories](guide/container/from_directories)<br/><br/> | [lst](guide/container/lst.md)<br/> [partition](guide/container/partition.md)<br/> [get](guide/container/get.md)<br/> [interpolate](guide/container/interpolate.md)|
+
+The structure of the PRIZM data container is also schematized below. While the container is organized in a nested dictionary structure, each data entry is stored as a `numpy.ndarray`.
 ```python
 {
     '70MHz':
@@ -76,7 +82,7 @@ The structure of the PRIZM data container is schematized below. While the contai
             'cross_real': numpy.ndarray,
             'temp_100_ambient': numpy.ndarray,
             ...
-        }
+        },
 
     '100MHz':
     {
@@ -85,12 +91,6 @@ The structure of the PRIZM data container is schematized below. While the contai
 }
 ```
 The container's primary keys, `70MHz` and `100MHz`, refer to the two PRIZM instruments. The data associated with a particular polarization channel are listed under the appropriate channel key, as examplified by the `pol` and `time_sys_start` entries under both the `EW` and `NS` keys. Meanwhile, the data describing the instrument's switching cadence are listed under the `Switch` key, as illustrated above by the `antenna` and `short` entries. Finally, the data related to both polarization channels are listed under the `Housekeeping` key, as shown by the `cross_real` and `temp_100_ambient` entries.
-
-Below is a list of the container's convenience methods. Select a method to learn more details about its functioning and usage.
-
-| Functions |
-| ----------|
-| [lst](guide/container/lst.md)<br/> [partition](guide/container/partition.md)<br/> [get](guide/container/get.md)<br/> [interpolate](guide/container/interpolate.md)|
 
 ### Usage
 
@@ -197,13 +197,12 @@ file_catalogue = {
     'antenna.scio.bz2': ('float','Switch','antenna'),
 }
 ```
-While the `classification_catalogue` connects parent directory names to the standard instrument names, the `file_catalogue` lists every file of interest along with its respective data type, subclassification, and standard alias. Notice, however, that the above examples are neither definitive nor exhaustive, and would need to be manually edited to accommodate additional data, different file names, and/or different parent directory names.
+While the `classification_catalogue` connects parent directory names to the primary data container keys, the `file_catalogue` lists every file of interest along with its respective data type, container hierarchy level, and container key. Notice, however, that the above examples are neither definitive nor exhaustive, and would need to be manually edited to accommodate additional data, different file names, and/or different parent directory names.
 
-
-In addition to the above catalogues, this function also receives a list of directory addresses as an argument, and returns a data container holding the data matching all cataloged files found within every subdirectory of the input directory addresses. This is illustrated below, where some of the data collected by the 70MHz instrument around December 10–11, 2021 is loaded.
+In addition to the above catalogues, the `from_directories` constructor also receives a list of directory addresses as an argument, and returns a data container holding the data matching all cataloged files found within every subdirectory of the input directory addresses. This is illustrated below, where some of the data collected by the 70MHz instrument around December 10–11, 2021 is loaded.
 ```python
 data = Data.from_directories(directory_addresses=['/project/s/sievers/prizm/marion2022/prizm-70/data_70MHz/16391',
                                                   '/project/s/sievers/prizm/marion2022/prizm-70/data_70MHz/switch/16391'],
-                             clsssification_catalogue=classification_catalogue,
+                             classification_catalogue=classification_catalogue,
                              file_catalogue=file_catalogue)
 ```
