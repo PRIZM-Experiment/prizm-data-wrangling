@@ -1,14 +1,14 @@
-<sup>**← [List of Functionalities](../../README.md#container-design)**</sup>
+<sup>**← [List of Functionalities](../../README.md#Container-Design)**</sup>
 
-# lst
+# `lst`
 
 Produces local sidereal time entries for each input instrument and channel. The default location is set to PRIZM's deployment site at Marion island.
 
-#### Signature
+### Signature
 ```python
 lst(self, instruments, channels, location)
 ```
 
-#### Example
+### Example
 
 

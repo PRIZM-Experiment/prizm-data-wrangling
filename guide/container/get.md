@@ -1,14 +1,14 @@
-<sup>**← [List of Functionalities](../../README.md#container-design)**</sup>
+<sup>**← [List of Functionalities](../../README.md#Container-Design)**</sup>
 
-# get
+# `get`
 
 Extracts the data partition associated with the input instrument and channel.
 
-#### Signature
+### Signature
 ```python
 get(self, data, instrument, channel, partition)
 ```
 
-#### Example
+### Example
 
 

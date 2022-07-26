@@ -1,4 +1,4 @@
-<sup>**← [List of Tables](../../README.md#metadatabase-schema)**</sup>
+<sup>**← [List of Tables](../../README.md#Metadatabase-Schema)**</sup>
 
 # Data Types
 
