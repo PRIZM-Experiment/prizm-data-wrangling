@@ -1,4 +1,4 @@
-<sup>**← [List of Tables](../README.md#metadatabase-schema)**</sup>
+<sup>**← [List of Tables](../../README.md#metadatabase-schema)**</sup>
 
 # Hardware Configurations
 

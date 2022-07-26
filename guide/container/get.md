@@ -1,13 +1,14 @@
-<sup>**← [List of Methods](../README.md#container-design)**</sup>
+<sup>**← [List of Functionalities](../../README.md#container-design)**</sup>
 
-# lst
+# get
 
-## Signature
+Extracts the data partition associated with the input instrument and channel.
+
+#### Signature
 ```python
-lst(self, instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], location=('37.819638d', '-46.88694d'))
+get(self, data, instrument, channel, partition)
 ```
-Produces local sidereal time entries for each input instrument and channel. The default location is set to PRIZM's deployment site at Marion island.
 
-## Example
+#### Example
 
 

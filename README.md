@@ -45,11 +45,11 @@ Below the Data, Hardware, and Index tables which make up the PRIZM metadatabase 
 
 ### Container Design
 
-Below is a list of the container's convenience methods. Select a method to learn more details about its functioning and usage.
+Below is a list of the PRIZM container's functionalities. Select a constructor or method to learn more details about its functioning and usage.
 
 | Constructors | Methods |
 | ------------ | --------|
-| [via_metadatabase](guide/container/via_metadatabase.md)<br/> [from_directories](guide/container/from_directories)<br/><br/> | [lst](guide/container/lst.md)<br/> [partition](guide/container/partition.md)<br/> [get](guide/container/get.md)<br/> [interpolate](guide/container/interpolate.md)|
+| [via_metadatabase](guide/container/via_metadatabase.md)<br/> [from_directories](guide/container/from_directories)<br/><br/><br/> | [lst](guide/container/lst.md)<br/> [partition](guide/container/partition.md)<br/> [get](guide/container/get.md)<br/> [interpolate](guide/container/interpolate.md)|
 
 The structure of the PRIZM data container is also schematized below. While the container is organized in a nested dictionary structure, each data entry is stored as a `numpy.ndarray`.
 ```python

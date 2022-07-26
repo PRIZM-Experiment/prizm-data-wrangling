@@ -1,13 +1,14 @@
-<sup>**← [List of Methods](../README.md#container-design)**</sup>
+<sup>**← [List of Functionalities](../../README.md#container-design)**</sup>
 
-# lst
+# interpolate 
 
-## Signature
+Employs linear interpolation over a given data partition to extrapolate spectra for each input time.
+
+#### Signature
 ```python
-lst(self, instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], location=('37.819638d', '-46.88694d'))
+interpolate(self, times, instrument, channel, partition, threshold)
 ```
-Produces local sidereal time entries for each input instrument and channel. The default location is set to PRIZM's deployment site at Marion island.
 
-## Example
+#### Example
 
 
