@@ -28,7 +28,7 @@ class Data(collections.UserDict):
         return cls(count_result_set, locate_result_set, mdb._directories['data'])
 
     @classmethod
-    def from_directories(cls, directory_addresses=['~'], classification_catalogue={'data_70MHz': '70MHz', 'data_100MHz': '100MHz'}, file_catalogue={'pol0.scio': ('float','EW','pol'), 'pol1.scio': ('float','NS','pol'), 'pol0.scio.bz2': ('float','EW','pol'), 'pol1.scio.bz2': ('float','NS','pol'), 'time_sys_stop.raw': ('float','EW','time_sys_stop'), 'time_sys_stop.raw': ('float','NS','time_sys_stop'), 'time_sys_start.raw': ('float','EW','time_sys_start'), 'time_sys_start.raw': ('float','NS','time_sys_start'), 'open.scio': ('float','Switch','open'), 'short.scio': ('float','Switch','short'), 'res50.scio': ('float','Switch','res50'), 'res100.scio': ('float','Switch','res100'), 'antenna.scio': ('float','Switch','antenna'), 'open.scio.bz2': ('float','Switch','open'), 'short.scio.bz2': ('float','Switch','short'), 'res50.scio.bz2': ('float','Switch','res50'), 'res100.scio.bz2': ('float','Switch','res100'), 'antenna.scio.bz2': ('float','Switch','antenna')}):
+    def from_directories(cls, directory_addresses=['~'], classification_catalogue={'data_70MHz': '70MHz', 'data_100MHz': '100MHz'}, file_catalogue={'pol0.scio': ('float',['EW'],'pol'), 'pol1.scio': ('float',['NS'],'pol'), 'pol0.scio.bz2': ('float',['EW'],'pol'), 'pol1.scio.bz2': ('float',['NS'],'pol'), 'time_sys_stop.raw': ('float',['EW','NS'],'time_sys_stop'), 'time_sys_stop.raw': ('float',['EW','NS'],'time_sys_stop'), 'open.scio': ('float',['Switch'],'open'), 'short.scio': ('float',['Switch'],'short'), 'res50.scio': ('float',['Switch'],'res50'), 'res100.scio': ('float',['Switch'],'res100'), 'antenna.scio': ('float',['Switch'],'antenna'), 'open.scio.bz2': ('float',['Switch'],'open'), 'short.scio.bz2': ('float',['Switch'],'short'), 'res50.scio.bz2': ('float',['Switch'],'res50'), 'res100.scio.bz2': ('float',['Switch'],'res100'), 'antenna.scio.bz2': ('float',['Switch'],'antenna')}):
         """ Loads the cataloged files located under the input directory addresses, organizing them according to the input classification catalogue. """
 
         # Initializes the result sets.
@@ -43,8 +43,9 @@ class Data(collections.UserDict):
             for file_path in glob.iglob(directory_address + '/**/' + file_name, recursive=True):
                 classification_name = [classification for key, classification in classification_catalogue.items() if key in file_path.split('/')][0]
                 file_extension = file_name.split('.')[1]
-                data_type, subclassification_name, file_alias = file_catalogue[file_name]
-                locate_result_set.append((classification_name, subclassification_name, file_path, file_extension, file_alias, data_type))
+                data_type, subclassification_names, file_alias = file_catalogue[file_name]
+                for subclassification_name in subclassification_names:
+                    locate_result_set.append((classification_name, subclassification_name, file_path, file_extension, file_alias, data_type))
 
         # Sorts the collected metadata.
         locate_result_set.sort()
