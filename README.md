@@ -1,4 +1,4 @@
-# Data Wrangling for PRIZM 
+# Data Wrangling for PRIZM
 
 This repository hosts both the PRIZM metadatabase and data container. The PRIZM metadatabase leverages SQLite and Python's `sqlite3` module to keep track of the experiment's data and deployment configurations. It provides scalability, ensures data consistency, and facilitates calibration and analysis by allowing complex data intersections to be retrieved in a straightforward fashion. The PRIZM data container combines the `collections.UserDict` and `numpy.array` objects into an intuitive hierarchical data structure which also enjoys the benefits of vectorization. It can hold data loaded via the metadatabase or directly loaded from a list of directories, and comes equipped with several convenience methods for data manipulation, analysis, and visualization.
 
@@ -54,7 +54,7 @@ Below is a list of the PRIZM container's functionalities. Select a constructor o
 The structure of the PRIZM data container is also schematized below. While the container is organized in a nested dictionary structure, each data entry is stored as a `numpy.ndarray`.
 ```python
 {
-    '70MHz':
+    '100MHz':
     {
         'EW':
         {
@@ -84,17 +84,17 @@ The structure of the PRIZM data container is also schematized below. While the c
             ...
         },
 
-    '100MHz':
+    '70MHz':
     {
         ...
     }
 }
 ```
-The container's primary keys, `70MHz` and `100MHz`, refer to the two PRIZM instruments. The data associated with a particular polarization channel are listed under the appropriate channel key, as examplified by the `pol` and `time_sys_start` entries under both the `EW` and `NS` keys. Meanwhile, the data describing the instrument's switching cadence are listed under the `Switch` key, as illustrated above by the `antenna` and `short` entries. Finally, the data related to both polarization channels are listed under the `Housekeeping` key, as shown by the `cross_real` and `temp_100_ambient` entries.
+The container's primary keys, `100MHz` and `70MHz`, refer to the two PRIZM instruments. The data associated with a particular polarization channel are listed under the appropriate channel key, as examplified by the `pol` and `time_sys_start` entries under both the `EW` and `NS` keys. Meanwhile, the data describing the instrument's switching cadence are listed under the `Switch` key, as illustrated above by the `antenna` and `short` entries. Finally, the data related to both polarization channels are listed under the `Housekeeping` key, as shown by the `cross_real` and `temp_100_ambient` entries.
 
 ### Usage
 
-The usage examples covered below assume the PRIZM metadatabase and data container have been imported as follows. 
+The usage examples covered below assume that the PRIZM metadatabase and data container have been imported as follows. For an interactive Jupyter notebook covering the usage of the code hosted in this repository, click [here](guide/Tutorial.ipynb).
 ```python
 import metadatabase as mdb
 from data import Data
@@ -149,7 +149,7 @@ mdb.execute(("SELECT DataDirectories.directory_address, DataTypes.file_name "
  ('/marion2018/data_100MHz/15302/1530293230', 'time_sys_stop.raw')]
 ```
 
-#### Loading Data via Metadatabase
+#### Loading Data via the Metadatabase
 
 PRIZM data can be loaded through the metadatabase using the data container's `via_metadatabase` constructor. This function receives lists as arguments, and returns a data container holding the data matching all combinations of these input lists' elements. This is illustrated below, where absolutely all data collected around April 22–23, 2018 is loaded.
 ```python
@@ -177,32 +177,30 @@ classification_catalogue = {
 }
 
 file_catalogue = {
-    'pol1.scio': ('float','NS','pol'),
-    'pol1.scio.bz2': ('float','NS','pol'),
-    'time_sys_stop.raw': ('float','NS','time_sys_stop'),
-    'time_sys_start.raw': ('float','NS','time_sys_start'),
-    'pol0.scio': ('float','EW','pol'),
-    'pol0.scio.bz2': ('float','EW','pol'),
-    'time_sys_stop.raw': ('float','EW','time_sys_stop'),
-    'time_sys_start.raw': ('float','EW','time_sys_start'),
-    'open.scio': ('float','Switch','open'),
-    'short.scio': ('float','Switch','short'),
-    'res50.scio': ('float','Switch','res50'),
-    'res100.scio': ('float','Switch','res100'),
-    'antenna.scio': ('float','Switch','antenna'),
-    'open.scio.bz2': ('float','Switch','open'),
-    'short.scio.bz2': ('float','Switch','short'),
-    'res50.scio.bz2': ('float','Switch','res50'),
-    'res100.scio.bz2': ('float','Switch','res100'),
-    'antenna.scio.bz2': ('float','Switch','antenna'),
+    'pol1.scio': ('float',['NS'],'pol'),
+    'pol1.scio.bz2': ('float',['NS'],'pol'),
+    'pol0.scio': ('float',['EW'],'pol'),
+    'pol0.scio.bz2': ('float',['EW'],'pol'),
+    'time_sys_stop.raw': ('float',['EW','NS'],'time_sys_stop'),
+    'time_sys_start.raw': ('float',['EW','NS'],'time_sys_start'),
+    'open.scio': ('float',['Switch'],'open'),
+    'short.scio': ('float',['Switch'],'short'),
+    'res50.scio': ('float',['Switch'],'res50'),
+    'res100.scio': ('float',['Switch'],'res100'),
+    'antenna.scio': ('float',['Switch'],'antenna'),
+    'open.scio.bz2': ('float',['Switch'],'open'),
+    'short.scio.bz2': ('float',['Switch'],'short'),
+    'res50.scio.bz2': ('float',['Switch'],'res50'),
+    'res100.scio.bz2': ('float',['Switch'],'res100'),
+    'antenna.scio.bz2': ('float',['Switch'],'antenna'),
 }
 ```
-While the `classification_catalogue` connects parent directory names to the primary data container keys, the `file_catalogue` lists every file of interest along with its respective data type, container hierarchy level, and container key. Notice, however, that the above examples are neither definitive nor exhaustive, and would need to be manually edited to accommodate additional data, different file names, and/or different parent directory names.
+While the `classification_catalogue` connects parent directory names to the primary data container keys, the `file_catalogue` lists every file of interest along with its respective data type, container hierarchy levels, and container key. Notice, however, that the above examples are neither definitive nor exhaustive, and would need to be manually edited to accommodate additional data, different file names, and/or different parent directory names.
 
-In addition to the above catalogues, the `from_directories` constructor also receives a list of directory addresses as an argument, and returns a data container holding the data matching all cataloged files found within every subdirectory of the input directory addresses. This is illustrated below, where some of the data collected by the 70MHz instrument around December 10–11, 2021 is loaded.
+In addition to the above catalogues, the `from_directories` constructor also receives a list of directory addresses as an argument, and returns a data container holding the data matching all cataloged files found within every subdirectory of the input directory addresses. This is illustrated below, where some of the data collected by the 100MHz instrument around October 21–22, 2021 is loaded.
 ```python
-data = Data.from_directories(directory_addresses=['/project/s/sievers/prizm/marion2022/prizm-70/data_70MHz/16391',
-                                                  '/project/s/sievers/prizm/marion2022/prizm-70/data_70MHz/switch/16391'],
+data = Data.from_directories(directory_addresses=['/project/s/sievers/prizm/marion2022/prizm-100/data_100MHz/16348',
+                                                  '/project/s/sievers/prizm/marion2022/prizm-100/data_100MHz/switch/16348'],
                              classification_catalogue=classification_catalogue,
                              file_catalogue=file_catalogue)
 ```
