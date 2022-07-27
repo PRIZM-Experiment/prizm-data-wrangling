@@ -94,11 +94,13 @@ The container's primary keys, `100MHz` and `70MHz`, refer to the two PRIZM instr
 
 ### Usage
 
-The usage examples covered below assume that the PRIZM metadatabase and data container have been imported as follows. For an interactive Jupyter notebook covering the usage of the code hosted in this repository, click [here](guide/Tutorial.ipynb).
+The usage examples covered below assume that the PRIZM metadatabase and data container have been imported as follows. 
 ```python
 import metadatabase as mdb
 from data import Data
 ```
+
+For an interactive version of this section, click [here](guide/Tutorial.ipynb). 
 
 #### Retrieving Metadata
 
