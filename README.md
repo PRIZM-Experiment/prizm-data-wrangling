@@ -244,7 +244,7 @@ data['100MHz']['NS']['Partitions']
 
 ##### Data Slicing
 
-The `get` method can then be called to extract the data associated with a specific partition. As an example, the sky observations and timestamps associated with the east-west channel of the 100MHz antenna can be extracted as follows.
+The `get` method can used to extract data associated with a specific partition. As an example, the sky observations and timestamps associated with the east-west channel of the 100MHz antenna can be extracted as follows.
 ```python
 data.get(data='pol', instrument='100MHz', channel='EW', partition='antenna')
 ```
