@@ -90,7 +90,7 @@ The structure of the PRIZM data container is also schematized below. While the c
     }
 }
 ```
-The container's primary keys, `100MHz` and `70MHz`, refer to the two PRIZM instruments. The data associated with a particular polarization channel are listed under the appropriate channel key, as examplified by the `pol` and `time_sys_start` entries under both the `EW` and `NS` keys. Meanwhile, the data describing the instrument's switching cadence are listed under the `Switch` key, as illustrated above by the `antenna` and `short` entries. Finally, the data related to both polarization channels are listed under the `Housekeeping` key, as shown by the `cross_real` and `temp_100_ambient` entries.
+The container's primary keys, `100MHz` and `70MHz`, refer to the two PRIZM instruments. The data associated with a particular polarization channel are listed under the appropriate channel key, as examplified by the `pol` and `time_sys_start` entries under both the `EW` and `NS` keys. Meanwhile, the data describing the instrument's switching cadence are listed under the `Switch` key, as illustrated above by the `antenna` and `short` entries. Any remaining data are listed under the `Housekeeping` key, as shown by the `cross_real` and `temp_100_ambient` entries.
 
 ### Usage
 
@@ -197,12 +197,64 @@ file_catalogue = {
     'antenna.scio.bz2': ('float',['Switch'],'antenna'),
 }
 ```
-While the `classification_catalogue` connects parent directory names to the primary data container keys, the `file_catalogue` lists every file of interest along with its respective data type, container hierarchy levels, and container key. Notice, however, that the above examples are neither definitive nor exhaustive, and would need to be manually edited to accommodate additional data, different file names, and/or different parent directory names.
+While the `classification_catalogue` connects parent directory names to the primary data container keys, the `file_catalogue` lists every file of interest along with its respective data type, container hierarchy keys, and container entry name. Notice, however, that the above examples are neither definitive nor exhaustive, and would need to be manually edited to accommodate additional data, different file names, and/or different parent directory names.
 
-In addition to the above catalogues, the `from_directories` constructor also receives a list of directory addresses as an argument, and returns a data container holding the data matching all cataloged files found within every subdirectory of the input directory addresses. This is illustrated below, where some of the data collected by the 100MHz instrument around October 21–22, 2021 is loaded.
+In addition to the above catalogues, `from_directories` constructor also receives a list of directory addresses as an argument. The resulting data container holds the data matching all cataloged files found within every subdirectory of the input directory addresses. This is illustrated below, where some of the data collected by the 100MHz instrument around October 21–22, 2021 is loaded.
 ```python
 data = Data.from_directories(directory_addresses=['/project/s/sievers/prizm/marion2022/prizm-100/data_100MHz/16348',
                                                   '/project/s/sievers/prizm/marion2022/prizm-100/data_100MHz/switch/16348'],
                              classification_catalogue=classification_catalogue,
                              file_catalogue=file_catalogue)
+```
+
+#### Data Manipulation
+
+##### Accessing Data
+
+Each entry of the PRIZM data container can be accessed as in a Python dictionary. A few examples are listed below.
+```python
+data['100MHz']['EW']['pol']
+data['100MHz']['EW']['time_sys_start']
+data['100MHz']['Switch']['antenna']
+```
+
+##### Computing LST
+
+The `lst` method produces local sidereal time entries from the data's UTC Unix timestamps. These entries are stored as `lst_sys_start` and `lst_sys_stop` under the instrument and channel keys provided by the user.
+```python
+data.lst(instruments=['100MHz'], channels=['EW', 'NS'])
+```
+```python
+data['100MHz']['EW']['lst_sys_start']
+data['100MHz']['EW']['lst_sys_stop']
+data['100MHz']['NS']['lst_sys_start']
+data['100MHz']['NS']['lst_sys_stop']
+```
+
+##### Data Partitioning
+
+Because each PRIZM instrument regularly switches between performing sky observations and measuring the signal strength of its internal calibration sources, partitioning the data according to this switching cadence becomes an important aspect of data manipulation. Such partitions can be automatically generated with the `partition` method, as demonstrated below. The resulting partitions are stored under the instrument and channel keys provided by the user.
+```python
+data.partition(instruments=['100MHz'], channels=['EW', 'NS'], buffer=(1,1))
+```
+```python
+data['100MHz']['EW']['Partitions']
+data['100MHz']['NS']['Partitions']
+```
+
+##### Data Slicing
+
+The `get` method can then be called to extract the data associated with a specific partition. As an example, the sky observations and timestamps associated with the east-west channel of the 100MHz antenna can be extracted as follows.
+```python
+data.get(data='pol', instrument='100MHz', channel='EW', partition='antenna')
+```
+```python
+data.get(data='time_sys_start', instrument='100MHz', channel='EW', partition='antenna')
+```
+
+##### Spectra Interpolation
+
+Spectra associated with a specific data partition can also be extrapolated through linear interpolation with the help of the `interpolate` method. This is illustrated below, where the spectra of a calibrator interpolated for times at which the instrument was actually observing the sky.
+```python
+data.interpolate([...,...], instrument='100MHz', channel='EW', partition='short', threshold=500)
 ```
