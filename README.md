@@ -1,6 +1,6 @@
 # Data Wrangling for PRIZM
 
-This repository hosts both the PRIZM metadatabase and data container. The PRIZM metadatabase leverages SQLite and Python's `sqlite3` module to keep track of the experiment's data and deployment configurations. It provides scalability, ensures data consistency, and facilitates calibration and analysis by allowing complex data intersections to be retrieved in a straightforward fashion. The PRIZM data container combines the `collections.UserDict` and `numpy.array` objects into an intuitive hierarchical data structure which also enjoys the benefits of vectorization. It can hold data loaded via the metadatabase or directly loaded from a list of directories, and comes equipped with several convenience methods for data manipulation, analysis, and visualization.
+This repository hosts both the PRIZM metadatabase and data container. The PRIZM metadatabase leverages SQLite and Python's `sqlite3` module to keep track of the experiment's data and deployment configurations. It provides scalability, ensures data consistency, and facilitates calibration and analysis by allowing complex data intersections to be retrieved in a straightforward fashion. The PRIZM data container combines the `collections.UserDict` and `numpy.array` objects into an intuitive hierarchical data structure which also enjoys the benefits of vectorization. It can hold data loaded via the metadatabase or directly loaded from a list of directories, and comes equipped with several convenience methods for data manipulation and analysis.
 
 ## Dependencies
 
@@ -201,7 +201,7 @@ file_catalogue = {
 ```
 While the `classification_catalogue` connects parent directory names to the primary data container keys, the `file_catalogue` lists every file of interest along with its respective data type, container hierarchy keys, and container entry name. Notice, however, that the above examples are neither definitive nor exhaustive, and would need to be manually edited to accommodate additional data, different file names, and/or different parent directory names.
 
-In addition to the above catalogues, `from_directories` constructor also receives a list of directory addresses as an argument. The resulting data container holds the data matching all cataloged files found within every subdirectory of the input directory addresses. This is illustrated below, where some of the data collected by the 100MHz instrument around October 21–22, 2021 is loaded.
+In addition to the above catalogues, the `from_directories` constructor also receives a list of directory addresses as an argument. The resulting data container holds the data matching all cataloged files found within every subdirectory of the input directory addresses. This is illustrated below, where some of the data collected by the 100MHz instrument around October 21–22, 2021 is loaded.
 ```python
 data = Data.from_directories(directory_addresses=['/project/s/sievers/prizm/marion2022/prizm-100/data_100MHz/16348',
                                                   '/project/s/sievers/prizm/marion2022/prizm-100/data_100MHz/switch/16348'],
