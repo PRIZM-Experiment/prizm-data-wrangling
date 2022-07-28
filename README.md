@@ -1,6 +1,6 @@
 # Data Wrangling for PRIZM
 
-This repository hosts both the PRIZM metadatabase and data container. The PRIZM metadatabase leverages SQLite and Python's `sqlite3` module to keep track of the experiment's data and deployment configurations. It provides scalability, ensures data consistency, and facilitates calibration and analysis by allowing complex data intersections to be retrieved in a straightforward fashion. The PRIZM data container combines the `collections.UserDict` and `numpy.array` objects into an intuitive hierarchical data structure which also enjoys the benefits of vectorization. It can hold data loaded via the metadatabase or directly loaded from a list of directories, and comes equipped with several convenience methods for data manipulation and analysis.
+This repository hosts both the PRIZM metadatabase and data container. The PRIZM metadatabase leverages SQLite and Python's `sqlite3` module to keep track of the experiment's data and deployment configurations. It provides scalability, ensures data consistency, and facilitates calibration and analysis by allowing complex data intersections to be retrieved in a straightforward fashion. The PRIZM data container combines the `collections.UserDict` and `numpy.array` objects into an intuitive hierarchical data structure which also enjoys the benefits of vectorization. It can load data via the metadatabase or directly from a list of directories, and comes equipped with several convenience methods for data manipulation and analysis.
 
 ## Dependencies
 
@@ -37,7 +37,7 @@ Finally, to conclude the installation, ensure your `PYTHONPATH` environment vari
 
 ### Metadatabase Schema
 
-Below the Data, Hardware, and Index tables which make up the PRIZM metadatabase are listed. Select a table to learn more about its structure and relationship to other tables in the schema. For an interactive diagram, click [here](https://dbdiagram.io/d/6221828954f9ad109a58a8b9).
+The Data, Hardware, and Index tables which make up the PRIZM metadatabase are listed below. Select a table to learn more about its structure and relationship to other tables in the schema. For an interactive diagram, click [here](https://dbdiagram.io/d/6221828954f9ad109a58a8b9).
 
 | Data | Hardware | Index |
 | ---- | -------- | ----- |
@@ -45,7 +45,7 @@ Below the Data, Hardware, and Index tables which make up the PRIZM metadatabase 
 
 ### Container Design
 
-Below is a list of the PRIZM container's functionalities. Select a constructor or method to learn more details about its functioning and usage.
+The PRIZM container's functionalities are listed below. Select a constructor or method to learn more details about its functioning and usage.
 
 | Constructors | Methods |
 | ------------ | --------|
@@ -90,7 +90,7 @@ The structure of the PRIZM data container is also schematized below. While the c
     }
 }
 ```
-The container's primary keys, `100MHz` and `70MHz`, refer to the two PRIZM instruments. The data associated with a particular polarization channel are listed under the appropriate channel key, as examplified by the `pol` and `time_sys_start` entries under both the `EW` and `NS` keys. Meanwhile, the data describing the instrument's switching cadence are listed under the `Switch` key, as illustrated above by the `antenna` and `short` entries. Any remaining data are listed under the `Housekeeping` key, as shown by the `cross_real` and `temp_100_ambient` entries.
+The container's primary keys, `100MHz` and `70MHz`, refer to the two PRIZM instruments. The data associated with a particular polarization channel are listed under the appropriate channel key, as examplified by the `pol` and `time_sys_start` entries under both the `EW` and `NS` secondary keys. Meanwhile, the data describing the instrument's switching cadence are listed under the secondary `Switch` key, as illustrated above by the `antenna` and `short` entries. Any remaining data are listed under the secondary `Housekeeping` key, as shown by the `cross_real` and `temp_100_ambient` entries.
 
 ### Usage
 
@@ -171,7 +171,7 @@ data = Data.via_metadatabase(selection='./selections/2018_100MHz_EW.p')
 
 #### Loading Data from Directories
 
-PRIZM data can be loaded directly from a list of directories using the data container's `from_directories` constructor. Because this approach does not make use of the metadatabase, it requires a substantial amount of additional information as inputs in order to make sense of the file and directory structure the data will be read from. User-defined catalogues are used for that purpose. Below an example of such catalogues is shown.
+PRIZM data can be loaded directly from a list of directories using the data container's `from_directories` constructor. Because this approach does not make use of the metadatabase, it requires a substantial amount of additional information as input in order to make sense of the file and directory structure the data will be read from. User-defined catalogues are used for that purpose. Two illustrative catalogues are shown below.
 ```python
 classification_catalogue = {
     'data_70MHz': '70MHz',
@@ -199,9 +199,9 @@ file_catalogue = {
     'antenna.scio.bz2': ('float',['Switch'],'antenna'),
 }
 ```
-While the `classification_catalogue` connects parent directory names to the primary data container keys, the `file_catalogue` lists every file of interest along with its respective data type, container hierarchy keys, and container entry name. Notice, however, that the above examples are neither definitive nor exhaustive, and would need to be manually edited to accommodate additional data, different file names, and/or different parent directory names.
+While the `classification_catalogue` connects parent directory names to their respective primary container keys, the `file_catalogue` lists every file of interest along with its respective data type, secondary container keys, and container data entry. Notice, however, that the above examples are neither definitive nor exhaustive, and would need to be manually edited to accommodate additional data, different file names, and/or different parent directory names.
 
-In addition to the above catalogues, the `from_directories` constructor also receives a list of directory addresses as an argument. The resulting data container holds the data matching all cataloged files found within every subdirectory of the input directory addresses. This is illustrated below, where some of the data collected by the 100MHz instrument around October 21–22, 2021 is loaded.
+In addition to user-defined catalogues, the `from_directories` constructor also receives a list of directory addresses as an argument. The resulting data container holds the data matching all cataloged files found within every subdirectory of the input directory addresses. This is illustrated below, where some of the data collected by the 100MHz instrument around October 21–22, 2021 is loaded.
 ```python
 data = Data.from_directories(directory_addresses=['/project/s/sievers/prizm/marion2022/prizm-100/data_100MHz/16348',
                                                   '/project/s/sievers/prizm/marion2022/prizm-100/data_100MHz/switch/16348'],
@@ -213,16 +213,16 @@ data = Data.from_directories(directory_addresses=['/project/s/sievers/prizm/mari
 
 ##### Accessing Data
 
-Each entry of the PRIZM data container can be accessed as in a Python dictionary. A few examples are listed below.
+Each data entry of the PRIZM data container can be accessed as in a Python dictionary. A few examples are listed below.
 ```python
 data['100MHz']['EW']['pol']
 data['100MHz']['EW']['time_sys_start']
 data['100MHz']['Switch']['antenna']
 ```
 
-##### Computing LST
+##### Data Aligning
 
-The `lst` method produces local sidereal time entries from the data's UTC Unix timestamps. These new entries are labeled `lst_sys_start` and `lst_sys_stop`, and stored under the instrument and channel keys provided by the user.
+In order to meaningfully compare PRIZM sky data collected at different times, it is necessary align it with respect to the local sidereal time. This can be done with the help of the `lst` method, which produces local sidereal time entries from the data's UTC Unix timestamps. These new entries are labeled `lst_sys_start` and `lst_sys_stop`, and stored under the instrument and channel keys provided by the user.
 ```python
 data.lst(instruments=['100MHz'], channels=['EW', 'NS'])
 ```
@@ -256,7 +256,8 @@ data.get(data='time_sys_start', instrument='100MHz', channel='EW', partition='an
 
 ##### Spectra Interpolation
 
-Spectra associated with a specific data partition can also be extrapolated through linear interpolation with the help of the `interpolate` method. This is illustrated below, where the spectra of a calibrator interpolated for times at which the instrument was actually observing the sky.
+Spectra associated with a specific data partition can also be extrapolated through linear interpolation with the help of the `interpolate` method. This is illustrated below, where the spectra due to a calibration source is obtained for times at which the instrument was actually observing the sky.
 ```python
-data.interpolate([...,...], instrument='100MHz', channel='EW', partition='short', threshold=500)
+sky_times = data.get(data='time_sys_start', instrument='100MHz', channel='EW', partition='antenna')
+data.interpolate(sky_times, instrument='100MHz', channel='EW', partition='noise', threshold=1000)
 ```
