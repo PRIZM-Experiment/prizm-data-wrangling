@@ -222,7 +222,7 @@ data['100MHz']['Switch']['antenna']
 
 ##### Data Aligning
 
-In order to meaningfully compare PRIZM sky data collected at different times, it is necessary align it with respect to the local sidereal time. This can be done with the help of the `lst` method, which produces local sidereal time entries from the data's UTC Unix timestamps. These new entries are labeled `lst_sys_start` and `lst_sys_stop`, and stored under the instrument and channel keys provided by the user.
+In order to meaningfully compare PRIZM sky data collected at different times, it is necessary to align it with respect to the local sidereal time. This can be done with the help of the `lst` method, which produces local sidereal time entries from the data's UTC Unix timestamps. These new entries are labeled `lst_sys_start` and `lst_sys_stop`, and stored under the instrument and channel keys provided by the user.
 ```python
 data.lst(instruments=['100MHz'], channels=['EW', 'NS'])
 ```
@@ -256,7 +256,7 @@ data.get(data='time_sys_start', instrument='100MHz', channel='EW', partition='an
 
 ##### Spectra Interpolation
 
-Spectra associated with a specific data partition can also be extrapolated through linear interpolation with the help of the `interpolate` method. This is illustrated below, where the spectra due to a calibration source is obtained for times at which the instrument was actually observing the sky.
+Spectra associated with a specific data partition can also be extrapolated through linear interpolation with the help of the `interpolate` method. This is illustrated below, where the spectra of a calibration source is obtained for times at which the instrument was actually observing the sky. Note that interpolated spectra are only generated for those times which are within a user-defined threshold (measured in seconds) of existing data. An array of `numpy.NaN`s is generated for the input times which do not clear that threshold.
 ```python
 sky_times = data.get(data='time_sys_start', instrument='100MHz', channel='EW', partition='antenna')
 data.interpolate(sky_times, instrument='100MHz', channel='EW', partition='noise', threshold=1000)
