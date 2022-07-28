@@ -222,7 +222,7 @@ data['100MHz']['Switch']['antenna']
 
 ##### Computing LST
 
-The `lst` method produces local sidereal time entries from the data's UTC Unix timestamps. These entries are stored as `lst_sys_start` and `lst_sys_stop` under the instrument and channel keys provided by the user.
+The `lst` method produces local sidereal time entries from the data's UTC Unix timestamps. These entries are labeled `lst_sys_start` and `lst_sys_stop`, and stored under the instrument and channel keys provided by the user.
 ```python
 data.lst(instruments=['100MHz'], channels=['EW', 'NS'])
 ```
@@ -235,7 +235,7 @@ data['100MHz']['NS']['lst_sys_stop']
 
 ##### Data Partitioning
 
-Because each PRIZM instrument regularly switches between performing sky observations and measuring the signal strength of its internal calibration sources, partitioning the data according to this switching cadence becomes an important aspect of data manipulation. Such partitions can be automatically generated with the `partition` method, as demonstrated below. The resulting partitions are stored under the instrument and channel keys provided by the user.
+Because each PRIZM instrument regularly switches between performing sky observations and measuring the signal strength of its internal calibration sources, partitioning the data according to this switching cadence becomes an important aspect of data manipulation. Such partitions can be automatically generated with the `partition` method, as demonstrated below. The resulting partitions are stored in the `Partitions` entry under the instrument and channel keys provided by the user.
 ```python
 data.partition(instruments=['100MHz'], channels=['EW', 'NS'], buffer=(1,1))
 ```
