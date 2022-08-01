@@ -150,6 +150,10 @@ def interpolate(self, times, instrument='100MHz', channel='EW', partition='short
     x = self[instrument][channel]['time_sys_start']
     y = self[instrument][channel]['pol']
 
+    # Warning!
+    if threshold >= x:
+        raise Exception("The chosen threshold exceeds the time interval spanned by the data.")
+
     # Allocates the interpolation result.
     interpolation = np.empty((len(times), y.shape[1]))
 
