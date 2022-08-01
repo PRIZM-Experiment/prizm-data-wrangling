@@ -235,7 +235,7 @@ data['100MHz']['NS']['lst_sys_stop']
 
 ##### Data Partitioning
 
-Because each PRIZM instrument regularly switches between performing sky observations and measuring the signal strength of its internal calibration sources, partitioning the data according to this switching cadence becomes an important aspect of data manipulation. Such partitions can be automatically generated with the `partition` method, as demonstrated below. The resulting partitions are stored a new `Partitions` entry under the instrument and channel keys provided by the user.
+Because each PRIZM instrument regularly switches between performing sky observations and measuring the signal strength of its internal calibration sources, partitioning the data according to this switching cadence becomes an important aspect of data manipulation. Such partitions can be automatically generated with the `partition` method, as demonstrated below. The resulting partitions are stored in a new `Partitions` entry under the instrument and channel keys provided by the user.
 ```python
 data.partition(instruments=['100MHz'], channels=['EW', 'NS'], buffer=(1,1))
 ```
