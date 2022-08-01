@@ -151,7 +151,7 @@ def interpolate(self, times, instrument='100MHz', channel='EW', partition='short
     y = self[instrument][channel]['pol']
 
     # Warning!
-    if threshold >= x:
+    if threshold >= (x[-1] - x[0]):
         raise Exception("The chosen threshold exceeds the time interval spanned by the data.")
 
     # Allocates the interpolation result.
