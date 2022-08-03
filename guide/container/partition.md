@@ -6,9 +6,11 @@ Produces partitions which slice the data according to the instrument's switch st
 
 ### Signature
 ```python
-partition(self, instruments, channels, buffer)
+partition(instruments, channels, buffer)
 ```
 
 ### Example
-
+```python
+data.partition(instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], buffer=(1,1))
+```
 

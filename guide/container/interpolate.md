@@ -6,9 +6,12 @@ Employs linear interpolation over a given data partition to extrapolate spectra 
 
 ### Signature
 ```python
-interpolate(self, times, instrument, channel, partition, threshold)
+interpolate(times, instrument, channel, partition, threshold)
 ```
 
 ### Example
-
+```python
+sky_times = data.get(data='time_sys_start', instrument='100MHz', channel='EW', partition='antenna')
+data.interpolate(sky_times, instrument='100MHz', channel='EW', partition='noise', threshold=1000)
+```
 
