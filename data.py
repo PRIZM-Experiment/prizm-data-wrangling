@@ -82,7 +82,7 @@ class Data(collections.UserDict):
 
 
 def iso(ctimes):
-    " Converts UNIX times (UTC) to the ISO 8601 compliant date-time format 'YYYY-MM-DD HH:MM:SS.sss'. "
+    """ Converts UNIX times (UTC) to the ISO 8601 compliant date-time format 'YYYY-MM-DD HH:MM:SS.sss'. """
 
     return Time(ctimes, format='unix', scale='utc').iso
 
