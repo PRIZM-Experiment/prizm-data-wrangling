@@ -114,7 +114,7 @@ def partition(self, instruments=['100MHz', '70MHz'], channels=['EW', 'NS'], buff
     for channel, instrument in itertools.product(*[channels, instruments]):
         # Ensures the data dictionary has an entry for data partitions.
         if 'Partitions' not in self[instrument][channel].keys():
-            self[instrument][channel]['Partitions'] = {}
+            self[instrument][channel]['Partitions'] = dict()
 
         for file_alias, switch_data in self[instrument]['Switch'].items():
             # Removes switch states with invalid timestamps, as well as unpaired switch states.
