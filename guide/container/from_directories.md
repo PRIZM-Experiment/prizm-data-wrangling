@@ -2,7 +2,7 @@
 
 # `from_directories`
 
-Loads the cataloged files located under the input directory addresses, organizing them according to the input catalogues.
+Loads the cataloged files located under the input directory addresses, organizing them according to the input catalogues. Important: This constructor assumes that the data directory structure is headed by an instrument directory (e.g. `../data_70MHz`) containing sub-directories for that instrument's antenna data (e.g. `../data_70MHz/16348`, etc.), switch data (e.g. `../data_70MHz/switch`), and temperature data (e.g. `../data_70MHz/temperature`).
 
 ### Signature
 ```python
