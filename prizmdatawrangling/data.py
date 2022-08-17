@@ -4,7 +4,7 @@ import operator
 import itertools
 import collections
 import numpy as np
-import metadatabase as mdb
+import prizmdatawrangling.metadatabase as mdb
 from astropy.time import Time
 
 

@@ -9,7 +9,7 @@ try:
     import scio.scio as scio
 except:
     import scio
-from metadatabase import __file__ as _path
+from prizmdatawrangling.metadatabase import __file__ as _path
 
 
 # Global objects containing the directory addresses of: this module, the metadata, and PRIZM data.

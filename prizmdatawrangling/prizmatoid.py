@@ -32,7 +32,7 @@ import suntime
 import ephem
 from datetime import datetime, timezone, timedelta
 
-import metadatabase as mdb
+import prizmdatawrangling.metadatabase as mdb
 
 class SpectralData:
     """
