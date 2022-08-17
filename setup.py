@@ -5,6 +5,8 @@ setup(
     version='1.0',
     author='Fernando Zago',
     packages=['prizmdatawrangling'],
+    package_data={'': ['settings.json']},
+
     python_requires='>=3.6',
     install_requires=[
         "numpy >= 1.2",
