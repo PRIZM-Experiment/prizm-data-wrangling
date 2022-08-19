@@ -15,10 +15,17 @@ Clone this repository within the directory of your choice.
 git clone https://github.com/PRIZM-Experiment/prizm-data-wrangling.git
 ```
 
-Run the following commmands within the repository's directory.
+If you want to re-generate the metadata: run the following commmands within the repository's directory.
 ```bash
 chmod +x install.sh
 ./install.sh
+```
+
+Go to the prizmdatawrangling folder, and modify the paths in the settings.json file
+
+Finalise the installation
+```bash
+python setup.py install
 ```
 
 If successful, after a few minutes a binary file named `metadatabase.db` will have been generated. This file encapsulates all of PRIZM's metadata, and can be placed in whichever directory is most convenient for the user.
