@@ -21,24 +21,21 @@ chmod +x install.sh
 ./install.sh
 ```
 
-Go to the prizmdatawrangling folder, and modify the paths in the settings.json file
-
-Finalise the installation
-```bash
-python setup.py install
-```
-
 If successful, after a few minutes a binary file named `metadatabase.db` will have been generated. This file encapsulates all of PRIZM's metadata, and can be placed in whichever directory is most convenient for the user.
 
-Next, edit the directory addresses in `settings.json` to reflect the chosen locations for the `metadatabase.db` file and the PRIZM data itself. As an example, for a user accessing PRIZM data through Niagara and keeping their `metadatabase.db` within a `prizm-data-wrangling` repository cloned to their root directory, the settings should be as follows.
+Next, go to the prizmdatawrangling folder, and edit the directory addresses in `settings.json` to reflect the chosen locations for the `metadatabase.db` file and the PRIZM data itself. As an example, for a user accessing PRIZM data through Niagara and keeping their `metadatabase.db` within a `prizm-data-wrangling` repository cloned to their root directory, the settings should be as follows.
 ```json
 {
     "data": "/project/s/sievers/prizm",
     "metadata": "~/prizm-data-wrangling"
 }
 ```
+Finally to conclude the installation
+```bash
+python setup.py install
+```
 
-Finally, to conclude the installation, ensure your `PYTHONPATH` environment variable points to the location of the `prizm-data-wrangling` repository.
+We recommend doing this in a virtual environment, such as pyenv or conda, to avoid module conflicts with your system python. 
 
 ## Documentation
 
