@@ -5,6 +5,7 @@ setup(
     version='1.0',
     author='Fernando Zago',
     packages=['prizmdatawrangling'],
+    package_data={'prizmdatawrangling': ['settings.json']},
 
     python_requires='>=3.6',
     install_requires=[
