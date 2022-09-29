@@ -1,4 +1,4 @@
 {
-   "data": "/Users/ronniyjoseph/Sync/MSI_Fellowship/PRIZM/prizm_data",
-   "metadata": "/Users/ronniyjoseph/Sync/MSI_Fellowship/PRIZM/prizm-data-wrangling"
+   "data": "substitute/this/string/by/the/prizm/data/parent/directory",
+   "metadata": "substitute/this/string/by/the/metadatabase/parent/directory"
 }
