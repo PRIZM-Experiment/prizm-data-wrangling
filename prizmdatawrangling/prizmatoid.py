@@ -12,8 +12,8 @@ import copy
 import healpy
 
 # PyGSM (https://github.com/telegraphic/PyGSM)
-from pygsm import GSMObserver
-from pygsm import GlobalSkyModel
+from pygdsm import GSMObserver
+from pygdsm import GlobalSkyModel
 
 # Scio (https://github.com/sievers/scio)
 # Handle the difference between the scio version on Github and pip
